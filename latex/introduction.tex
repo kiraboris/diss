@@ -1,0 +1,70 @@
+\section{Introduction}
+\subsection{What are spectra and why we need them}
+
+According to quantum theory in physics, all quantum systems have a finite or infinite number of quantum states, distinct by energy level. Energy levels are usually eigenvalues of an energy operator, most commonly - the full energy operator, or Hamiltonian, which is the sum of potential and kinetic energy operators.
+
+Quantum systems can undergo transitions between quantum states with different energy, but the energy conservation law obligates quantum system to use some energy carrier to fill the energy gap between the different quantum states. One of the most abundant energy carriers in the universe is the photon, a particle which gives rise to the macroscopic phenomena of electromagnetic radiation and electromagnetic force.
+
+Atoms, poly-atomic molecules and ions in space or in some laboratory experiments can be treated as isolated quantum systems. They undergo quantum transitions, absorb and emit photons. Photons, or electromagnetic waves, can travel large distances until they hit our detectors, where their energy is measured. A set of measured transitions plotted as intensity versus energy is called a spectrum. 
+
+Spectra are objects of study in spectroscopy. We analyze experimental spectra to learn transitions parameters of molecules in known laboratory conditions. This is what laboratory spectroscopists are doing. We also analyze experimental spectra to find characteristic transitions of particles with known transition parameters, i.e. identify particles by their "fingerprints". This is what astrophysicists are doing. 
+
+The latter particles often exist in in unknown conditions, e.g. unknown temperature and gas pressure in space. Then there is an additional task to find out these conditions, to learn things about space by just examining spectra of molecules, atoms and ions. We can learn about the constituents of stars, planets and giant clouds of gas and dust in space, about their motion, heating and cooling processes and chemical reactions. We can learn things about the birth and death of stars and galaxies.
+
+\subsection{Basics of molecular spectroscopy}
+
+In this work, I concentrate on spectra of molecules.
+
+\subsubsection{Born-Oppenheimer approximation}
+
+In the Born-Oppenheimer approximation the full energy $H$ of a molecule can be written as a sum of:
+\begin{enumerate}
+	\item potential energy of the electrons in the potential well of much slower nuclei ($H_e$)
+	\item kinetic energy of the electrons, which is negligible because of comparably very low mass of the electrons
+	\item kinetic energy of the nuclear skeleton:
+	\begin{enumerate}
+		\item translational, which can be set to zero for a single molecule without loss of generality
+		\item vibrational ($H_v$)
+		\item rotational ($H_r$)
+	\end{enumerate}	
+\end{enumerate}
+
+All these operators (except the one for translational energy) have discreet spectra. The orders of magnitude in energy eigenvalue differences are the following for each operator:
+\begin{itemize}
+	\item $H_r$: microwave and sub-millimeter (terahertz, far-infrared) regions, approx. 300-3'000'000 $MHz$
+	\item $H_v$: near- and mid-infrared regions, approx. 1'000-10'000 $cm^{-1}$
+	\item $H_e$: visible region and higher energies
+\end{itemize}	
+
+Electronic spectra were the first to be thoroughly studied, initially spectra of single atoms in visible light, ultraviolet and x-ray. There were some experiments with photo plates and alkali metals. Modern electron spectroscopy uses bremsstrahlung and other sources of UV and x-rays.
+
+According to the classical interpretation of molecular vibrations, each chemical bond in a molecule vibrates at a frequency characteristic of that bond. A group of atoms in a molecule (e.g., $CH_2$) may have multiple modes of oscillation caused by the stretching and bending motions of the group as a whole. 
+
+Vibrational frequencies for most molecules correspond to the frequencies or energies of infrared light. Infrared lasers and infrared telescopes are used to study organic compounds in laboratories and in space. Information about the sample composition in terms of chemical groups present and information about bond lengths can be obtained in these experiments. 
+
+Microwave spectroscopy deals with low-energy quantum transitions. Firstly, this helps to study cold regions of space, because in regions with low ambient energy only low-energy quantum states are being excited - rotational states. Secondly, all detectors and experiments, while consistently getting better, are limited by their relative resolution, which is the ratio between energy (frequency) resolution and the actual energy of recorded spectra. This implies that spectra with lower energy can reach better resolution then their electronic and (ro-)vibrational counterparts. Also, pure rotational transitions are well suited to study cold interstellar objects, in which mostly only rotational levels of molecules are populated. 
+
+Modern microwave spectroscopy uses tunable power sources with small frequency bandwidth, big signal to noise ratio, high stability etc., which are called synthesizers or local oscillators.
+
+The THz frequency band is located between the spectral regions of microwave and infrared wavelength. It is one of the most unexplored regions in the electromagnetic spectrum, because powerful, tunable, monochromatic radiation sources have been practically not available. Enormous technical progresses in the development of such light sources over the last years give astronomers and spectroscopists increasingly access to this frequency region. 
+
+
+\subsubsection{Complexity of a molecule and its spectrum}
+
+In this work, I concentrate on microwave (rotational) spectroscopy of molecules with approx. 2-10 nuclei. 
+
+Rotational spectra with more nuclei become increasingly more complex. Firstly, most \lq\lq{}big\rq\rq{} molecules are asymmetric tops. Secondly,  molecules that have many atoms with many degrees of freedom posses lots of possible vibrational excited states and possibly many isomers and conformers. They have many Hamiltonian parameters, distortions and irregularities. Some of them are "floppy" and don't have an adequate quantum model at all.
+
+Complex spectra have great line density and many blended lines.
+
+\subsubsection{Human effort}
+
+In this work, by saying "human effort" I primarily mean time - working hours of scientific stuff spent on conducting experiments and on the analysis of each species in each experiment. During analysis, people usually have to look through raw spectroscopic data several times, as well as they have to interact with spectroscopic software with the computer mouse, press many buttons etc. All of this consumes a lot of time a requires concentration, because mistakes are often crucial for the end result and also they can be hard to track. There are several general ways to reduce human effort:
+\begin{itemize}
+ 	\item reduce the amount of "clicks" or other actions with the mouse and keyboard
+	\item delegate some work to automatic computer algorithms 
+	\item make software tools and their graphical user interfaces more user-friendly
+	\item introduce better guidelines for people to make less mistakes
+	\item mistakes should be less critical, i.e. easier to locate and undo
+\end{itemize}
+
