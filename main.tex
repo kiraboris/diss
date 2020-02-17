@@ -14,18 +14,18 @@
 \tableofcontents
 \newpage
 
-\include{latex/abstract}
-\include{latex/introduction}
+%\include{latex/abstract}
+%\include{latex/introduction}
 
 \section{The way towards automated molecular spectra analysis}
 
-In this chapter we discuss \lq\lq{}standard fitting procedure\rq\rq{} used in molecular spectra analysis, details of that procedure, existing tools and methods. That leads to a discussion of new approaches with a focus on automation (reducing human effort). Examples are given with spectra of three molecules: OCS, vinyl cyanide and . 
+In this chapter the \lq\lq{}standard fitting procedure\rq\rq{} of rotational molecular spectra analysis is described, with details of that procedure, existing tools and methods. That leads to a discussion of new approaches with a focus on automation (reducing human effort). Examples are given with spectra of three molecules with increasing complexity of their spectra: OCS, vinyl cyanide (acrylonitrilie) and thiazole. Among them OCS is the simplest case, a linear top; the other two molecules are asymmetric tops: vinyl cyanide has a slightly crinkled carbon chain with a cyano (CN) group at the end and hence it is a nearly prolate top; thiazole is a ring molecule, oblate but highly asymmetric ($\kappa=-0,166$).   
 
 \subsection{Molecular models and a standard fitting procedure}
 
-In laboratories, we usually conduct experiments under known physical conditions $\mathfrak{C}$ (temperature, pressure, radiation etc.) until a phenomenon is understood good enough. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of the neutral molecule or molecular ion (below we use the word \lq\lq{}molecule\rq\rq{} for both cases), which could \emph{predict} observed spectral lines depending on conditions of observation. 
+In laboratories, we usually conduct experiments under known physical conditions $\mathfrak{C}$ (temperature, pressure, radiation etc.) until a phenomenon is understood good enough. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of the molecule or molecular ion (below we use the word \lq\lq{}molecule\rq\rq{} for both cases), which can be later used to predict how observations of those molecules look like under various conditions of observations and depending on conditions of observation. Thus, observational data under unknown conditions $\mathfrak{C}'$ can be compared with theoretical predictions and $\mathfrak{C}'$ can be deduced. Again, the model of the molecule is the knowledge we obtain from our laboratory experiments. 
 
-The simplest way to obtain this knowledge would be just memorize observations for every possible set of conditions. Of course, it is unpractical. Therefore we usually need to summarize experimental data in relatively simple model, fully defined by only a few adjustable parameters $p_1, ..., p_n$. There is an obvious trade-off between prediction quality and model complexity.
+The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $\mathfrak{C}$. Of course, it is unpractical. Therefore we usually need to summarize experimental data in relatively simple model, fully defined by only a few adjustable parameters $p_1, ..., p_n$. There is an obvious trade-off between prediction quality and model complexity.
 
 A model of a molecule is a mathematical object $M(\cdot | p_1, ..., p_n): \mathfrak{C} \rightarrow \Pi$, where $\mathfrak{C}$ are all possible physical conditions of observation, $\Pi$ are possible predicted spectra and $p_1, ..., p_n$ are internal model parameters. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted transitions are in some sense close to observed lines.  
 
