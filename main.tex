@@ -19,7 +19,7 @@
 
 \section{The way towards automated molecular spectra analysis}
 
-In this chapter the \lq\lq{}standard fitting procedure\rq\rq{} of rotational molecular spectra analysis is described, with details of that procedure, existing tools and methods. That leads to a discussion of new approaches with a focus on automation (reducing human effort). Examples are given with spectra of three molecules with increasing complexity of their spectra: OCS, vinyl cyanide (acrylonitrilie) and thiazole. Among them OCS is the simplest case, a linear top; the other two molecules are asymmetric tops: vinyl cyanide has a slightly crinkled carbon chain with a cyano (CN) group at the end and hence it is a nearly prolate top; thiazole is a ring molecule, oblate but highly asymmetric ($\kappa=-0,166$).   
+In this chapter, procedures for analysis and fitting rotational molecular spectra analysis are described along with tools and methods for this task. That leads to a discussion of new approaches with a focus on automation (reducing human effort). Examples are given with spectra of three molecules with increasing complexity of their spectra: OCS, vinyl cyanide (acrylonitrilie) and thiazole. Among them OCS is the simplest case, a linear top; the other two molecules are asymmetric tops: vinyl cyanide has a slightly crinkled carbon chain with a cyano (CN) group at the end and hence it is a nearly prolate top; thiazole is a ring molecule, oblate but highly asymmetric ($\kappa=-0,166$).   
 
 \subsection{Molecular models and a standard fitting procedure}
 
@@ -27,25 +27,25 @@ In laboratories, experiments are usually conducted under known physical conditio
 
 The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $\mathfrak{C}$. Of course, it is unpractical. Therefore we usually need to summarize experimental data in relatively simple model, fully defined by only a few adjustable parameters $p_1, ..., p_n$. There is an obvious trade-off between prediction quality and model complexity.
 
-A model of a molecule is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated function $f_M(\cdot | ): \{\mathfrak{C}\} \rightarrow \{S\}$, where ${\mathfrak{C}}$ are all possible physical conditions of observation, ${S}$ are possible predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted spectrum $S$ is in some sense close to the experimental spectrum $E$.  
+A model of a molecule is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated function $\tilde{M}(\cdot | ): \{\mathfrak{C}\} \rightarrow \{S\}$, where ${\mathfrak{C}}$ are all possible physical conditions of observation, ${S}$ are possible predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted spectrum $S$ is in some sense close to the experimental spectrum $E$.  
 
-The ways how different scientists and work groups construct and fit spectroscopic models of molecules does of course vary. Despite that, there is is a commonly used iterative fitting procedure, that is exclusively treated in this work as the \lq\lq{}standard fitting procedure\rq\rq{} (SFP). 
+The ways how different scientists and work groups construct and fit spectroscopic models of molecules does of course vary. Despite that, there is is a commonly used iterative fitting procedure, that is exclusively treated in this work: 
 
 \begin{enumerate}
 	\item Initialization: an initial model $M_0 = \{{p_1}, ..., {p_{n(0)}}\}$ is set up by educated guessing, extrapolation existing models or by \emph{ab inito} quantum calculation software. Here $n(0)$ is the initial amount of parameters; $n$ can change later. 
 	\item Parameter selection: there is a decision to be made about which parameters to actually fit, which to keep constant and which parameters to add or even remove from $M$ at each iteration.
-	\item Fitting: improvement of parameters ${p_1}_i, ..., {p_{n(i)}}_i \Rightarrow {p_1}_{i + 1}, ..., {p_{n(i)}}_{i + 1}$ by means of local or global optimization of a certain fintess function $\phi$. Here $i$ is the iteration index.
+	\item Fitting: improvement of parameters ${p_1}_i, ..., {p_{n(i)}}_i \Rightarrow {p_1}_{i + 1}, ..., {p_{n(i)}}_{i + 1}$ by means of local or global optimization of a certain fintess function $f$. Here $i$ is the iteration index.
 	\item Repeat (2) and (3) until some stop condition is reached.
-%Following tools are used here:
-%	\begin{itemize}
-%		\item The de facto standard tool for rotational and (ro-)vibrational spectroscopy are Pickett's SPFIT and SPCAT (0). They input and output simple text files in Pickett format. The CDMS catalog entries are basically output Pickett files. Many third-party software tools use Pickett as their core.
-%		\item Colin Western's PGOPHER is often used, being an all-in-one program for the whole SFP with additional features (0).
-%		\item Models with some complications require other fitting software, e.g. to take internal rotation into account (0). 
-%	\end{itemize}
 	
 \end{enumerate}
 
-This general SFP is similar to the expectation-maximization algorithm in statistics. The latter is also iterative and is used when a model is dependent on unobserved latent variables. In our case, possible ambiguity in the way how experimental data must be treated can be expressed in terms of an unobserved variable on which a special function depends, which we call metric.
+This procedure seems quite straightforward, but the level of difficulty for this problem is actually hidden in defining  a specific fitness function $f$. 
+
+If $f$ depends only on a model $M$, the problem is a standard learning problem.
+
+In other cases $f$ relies and depends on a hidden (not directly observalbe) variable.
+
+%This general SFP is similar to the expectation-maximization algorithm in statistics. The latter is also iterative and is used when a model is dependent on unobserved latent variables. In our case, possible ambiguity in the way how experimental data must be treated can be expressed in terms of an unobserved variable on which a special function depends, which we call metric.
 
 Let $a \in \mathfrak{A}$ be the unobserved variable. Then there is not only the model $M$ that determines the fit, but a pair $(M, a)$, and both must be optimized. A metric on $\mathfrak{A}$, $f(\cdot | M): \mathfrak{A}~\rightarrow~\R$ (or more generally, $f(\cdot | M): \mathfrak{A}~\rightarrow~Q$ with an arbitrary ordered quality space $Q$), would assess the quality of both the model with its parameters and $a$. %The latter represents treatment of experimental data and can vary from iteration to iteration.
 The function $\phi$ from step (2) can be constructed in the sense of binding $a$: $\phi(M) = f(a | M)$.
