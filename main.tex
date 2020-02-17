@@ -23,22 +23,19 @@ In this chapter the \lq\lq{}standard fitting procedure\rq\rq{} of rotational mol
 
 \subsection{Molecular models and a standard fitting procedure}
 
-In laboratories, we usually conduct experiments under known physical conditions $\mathfrak{C}$ (temperature, pressure, radiation etc.) until a phenomenon is understood good enough. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of the molecule or molecular ion (below we use the word \lq\lq{}molecule\rq\rq{} for both cases), which can be later used to predict how observations of those molecules look like under various conditions of observations and depending on conditions of observation. Thus, observational data under unknown conditions $\mathfrak{C}'$ can be compared with theoretical predictions and $\mathfrak{C}'$ can be deduced. Again, the model of the molecule is the knowledge we obtain from our laboratory experiments. 
+In laboratories, experiments are usually conducted under known physical conditions $\mathfrak{C}$ (temperature, pressure, radiation etc.) until a phenomenon is understood good enough. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of the molecule or molecular ion (below we use the word \lq\lq{}molecule\rq\rq{} for both cases), which can be later used to predict how observations of those molecules look like under various conditions of observations and depending on conditions of observation. Thus, observational data under unknown conditions $\mathfrak{C}'$ can be compared with theoretical predictions and $\mathfrak{C}'$ can be deduced. Again, the model of the molecule is the knowledge we obtain from our laboratory experiments. 
 
 The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $\mathfrak{C}$. Of course, it is unpractical. Therefore we usually need to summarize experimental data in relatively simple model, fully defined by only a few adjustable parameters $p_1, ..., p_n$. There is an obvious trade-off between prediction quality and model complexity.
 
-A model of a molecule is a mathematical object $M(\cdot | p_1, ..., p_n): \mathfrak{C} \rightarrow \Pi$, where $\mathfrak{C}$ are all possible physical conditions of observation, $\Pi$ are possible predicted spectra and $p_1, ..., p_n$ are internal model parameters. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted transitions are in some sense close to observed lines.  
+A model of a molecule is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated function $f_M(\cdot | ): \{\mathfrak{C}\} \rightarrow \{S\}$, where ${\mathfrak{C}}$ are all possible physical conditions of observation, ${S}$ are possible predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted spectrum $S$ is in some sense close to the experimental spectrum $E$.  
 
-Data can origin from different kinds of experiments. While all experiments in the field of molecular spectroscopy involve detectors of electromagnetic radiation, other conditions vary: there may be a heating or cooling system for temperature control, there may be an electric field for Stark measurements etc. Approaches to spectral analysis vary accordingly. 
-
-There is, however, a commonly used fitting procedure, that we exclusively treat in this work. We call the it the \lq\lq{}standard fitting procedure\rq\rq{} (SFP). This is its  general outline:
+The ways how different scientists and work groups construct and fit spectroscopic models of molecules does of course vary. Despite that, there is is a commonly used iterative fitting procedure, that is exclusively treated in this work as the \lq\lq{}standard fitting procedure\rq\rq{} (SFP). 
 
 \begin{enumerate}
-	\item Initialization: an initial model $M_0$ -- an initial set of parameters  ${p_1}, ..., {p_{n(0)}}$ is made by guessing, extrapolation existing models or by \lq\lq{}ab inito\rq\rq{} quantum calculation software (0). Here $n(0)$ is the initial amount of parameters; $n$ can change later. 
-	\item Fitness function construction. The fitness function will optimize model parameters in a later step by its value $\phi(M)$.
-	\item Fit parameters selection. There is a decision to be made about which parameters to actually fit, which to keep constant and which parameters to add or even remove from $M$ at each iteration.
-	\item Improvement of parameters ${p_1}_i, ..., {p_{n(i)}}_i \rightarrow {p_1}_{i + 1}, ..., {p_{n(i)}}_{i + 1}$ by means of local or global optimization of $\phi(M)$. Here $i$ is the iteration index.
-	\item Repeat (2) through (4) until some stop condition is reached.
+	\item Initialization: an initial model $M_0 = \{{p_1}, ..., {p_{n(0)}}\}$ is set up by educated guessing, extrapolation existing models or by \emph{ab inito} quantum calculation software. Here $n(0)$ is the initial amount of parameters; $n$ can change later. 
+	\item Parameter selection: there is a decision to be made about which parameters to actually fit, which to keep constant and which parameters to add or even remove from $M$ at each iteration.
+	\item Fitting: improvement of parameters ${p_1}_i, ..., {p_{n(i)}}_i \Rightarrow {p_1}_{i + 1}, ..., {p_{n(i)}}_{i + 1}$ by means of local or global optimization of a certain fintess function $\phi$. Here $i$ is the iteration index.
+	\item Repeat (2) and (3) until some stop condition is reached.
 %Following tools are used here:
 %	\begin{itemize}
 %		\item The de facto standard tool for rotational and (ro-)vibrational spectroscopy are Pickett's SPFIT and SPCAT (0). They input and output simple text files in Pickett format. The CDMS catalog entries are basically output Pickett files. Many third-party software tools use Pickett as their core.
@@ -48,9 +45,7 @@ There is, however, a commonly used fitting procedure, that we exclusively treat 
 	
 \end{enumerate}
 
-We see that the SFP may or may not be iterative. A non-iterative approach (a single iteration) is used if all experimental data can be fitted at once \emph{and} in an unambiguous way. When one of those two requirements are broken, an iterative approach is used. 
-
-An iterative SFP is similar to the expectation-maximization algorithm in statistics. The latter is also iterative and is used when a model is dependent on unobserved latent variables. In our case, possible ambiguity in the way how experimental data must be treated can be expressed in terms of an unobserved variable on which a special function depends, which we call metric.
+This general SFP is similar to the expectation-maximization algorithm in statistics. The latter is also iterative and is used when a model is dependent on unobserved latent variables. In our case, possible ambiguity in the way how experimental data must be treated can be expressed in terms of an unobserved variable on which a special function depends, which we call metric.
 
 Let $a \in \mathfrak{A}$ be the unobserved variable. Then there is not only the model $M$ that determines the fit, but a pair $(M, a)$, and both must be optimized. A metric on $\mathfrak{A}$, $f(\cdot | M): \mathfrak{A}~\rightarrow~\R$ (or more generally, $f(\cdot | M): \mathfrak{A}~\rightarrow~Q$ with an arbitrary ordered quality space $Q$), would assess the quality of both the model with its parameters and $a$. %The latter represents treatment of experimental data and can vary from iteration to iteration.
 The function $\phi$ from step (2) can be constructed in the sense of binding $a$: $\phi(M) = f(a | M)$.
