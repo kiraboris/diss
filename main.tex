@@ -29,7 +29,11 @@ The simplest way to obtain this knowledge would be to memorize experimental resu
 
 A model of a molecule is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated function $\tilde{M}(\cdot | ): \{\mathfrak{C}\} \rightarrow \{S\}$, where ${\mathfrak{C}}$ are all possible physical conditions of observation, ${S}$ are possible predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted spectrum $S$ is in some sense close to the experimental spectrum $E$.  
 
-The ways how different scientists and work groups construct and fit spectroscopic models of molecules does of course vary. Despite that, there is is a commonly used iterative fitting procedure, that is exclusively treated in this work: 
+The exact procedure of constructing and fitting a spectroscopic model depends on the certain molecule, the tools 
+
+Different scientists construct and fit spectroscopic models of molecules.
+
+Despite that, there is is a commonly used iterative fitting procedure, that is exclusively treated in this work: 
 
 \begin{enumerate}
 	\item Initialization: an initial model $M_0 = \{{p_1}, ..., {p_{n(0)}}\}$ is set up by educated guessing, extrapolation existing models or by \emph{ab inito} quantum calculation software. Here $n(0)$ is the initial amount of parameters; $n$ can change later. 
