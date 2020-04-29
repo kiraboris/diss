@@ -61,39 +61,42 @@ Let's consider fits with spectral line assignment. Spectral line assignment is b
 
 %A spectrum line is an image of a quantum transition between two quantum states (see Introduction). 
 
-Imagine two sets of spectral lines: experimental lines $E$ and predicted lines $P$. They are also often call observed lines and calculated lines (\lq\lq{}obs and calc\rq\rq{}). 
+Imagine two sets of spectral lines: experimental lines $E$ and predicted lines $P(M)$. They are also often called observed lines and calculated lines (\lq\lq{}obs and calc\rq\rq{}). 
 
 Each  line in $E$ is defined as a tuple $(x_e, ...)$ of peak position (frequency) and its other properties, such as intensity or width. Here, the peak position $x_e$ is unique among $E$. Often experimental lines are extracted from raw experimental data with a peak finder.
 
 Each line in $P$ is also defined as a tuple $(q, x_p, ...)$ of predicted transition frequency $x_p$, identifier $q$ and other properties of the transition. The identifier $q$ must be unique among $P$. Commonly, transition quantum numbers serve that purpose. Frequencies $x_p$ may be not unique due to degeneracy. 
 
-We call an \emph{assignment} (denoted $a$) a surjection from $P_a \subset P$ to $E_a \subset E$, which is a mapping $g_a(\cdot): P_a \rightarrow E_a$ or, equivalently, a set of tuples: 
+Both $E$ and $P(M)$ are estimates of the same thing -- transitions of a molecule. There is a real transition frequency $x_0$ in nature. The discrepancy between  $x_e$ and $x_0$ arises from imperfectness of experiments; the discrepancy between $x_e$ and $x_p$ arises from the imperfectness of experiments \emph{and} $M$.
+
+We call an \emph{assignment} (denoted $a$) a surjection from $P_a \subset P$ to $E_a \subset E$, which means that multiple predicted transitions can be assigned to the same experimental peak. It can described with a subset of tuples: 
 \begin{equation}
 \label{def_assignment}
-	a \defeq \{(q, x_e, ...): (q, ...) \in P_a; (x_e, ...) = g_a((q, ...)) \in E_a\}.
+	a \subset \{(q, x_p, x_e, ...): (q, x_p, ...) \in P_a; (x_e, ...) \in E_a\}.
 \end{equation}
 
-In nature, lines $E$ and $P$ are the same thing - transitions of a molecule. There is a real transition frequency $x$, so that both $x_e$ and $x_p$ are estimates $\hat x$. The discrepancy between  $x_e$ and $x_0$ arises from the imperfectness of experiments; the discrepancy between $x_e$ and $x_p$ (or between $E$ and $P$) arises from the imperfectness of experiments \emph{and} $M$. We imply that there is one, and only one, correct and complete assignment $a_0(E, P)$ for any given $E$ and $P$, among the possible assignments $\mathfrak{A}$. 
+We imply that there is one, and only one, correct \emph{complete} assignment $a_0(E, P)$ for any given $E$ and $P$, among the possible assignments. As stated in the previous section, a fitness function $f(M, a)$ would assess the quality of both an assignment $a$ and the model $M$. In case $a = a_0$, function $f$ can obviously just optimize the model parameters $p_1, ..., p_n$. If $a_0$ cannot be constructed at once, the next best thing to use are correct \emph{partial} assignments $a \subset a_0$, and a good $f$ should not depend on $a$, given $a \subset a_0$, more than on $M$.
 
-A metric $f(\cdot | M): \mathfrak{A}~\rightarrow~Q$ with some quality space $Q$ can be used to assess the quality of an assignment $a$ for the model $M$. %As said before, in practice $f$ will almost inevitably assess both $a$ and the underlying model.
-
-In case $a = a_0$, function $f$ can be indeed used to optimize the model parameters $p_1, ..., p_n$. It should be using some distance between $E$ and $P$. If only transition frequency is taken into account, the RMS of the \emph{residuals} is commonly used:
+The fitness function is typically using some distance between $E$ and $P$. If only transition frequencies are taken into account, the root mean square (RMS) of the residuals is commonly used:
 \begin{equation}
 \label{def_rms}
 	f_{RMS}(a) \propto \sum (x_e - x_p)^2\;{\rm with}\;a\;{\rm from}\;\ref{def_assignment}
 \end{equation}
-Due to the commonly normal distribution of $x_e$, residuals $x_e - x_p$ (often called \lq\lq{}obs minus calc\rq\rq{}) can be seen as estimates of $x_p - x_0$. The least squares fitting method depends on this to give reasonable $M$. 
 
-Alas, there is no way to be certain about if $a = a_0$, because $a$ is not directly observable. I will therefore often write about \lq\lq{}almost correct\rq\rq{} assignments, meaning those that share almost all $(q, x_e)$ pairs with $a_0$ except for only a relatively small amount of those pairs. %Additionally, experimental spectra often contain mixtures of $m > 1$ different species. In that case, there may be several correct assignments ${a_0}_i$, $i = 1, ... m$.
-A line assignment improvement step in fitting means adding pairs $(q, x_e)$ to $a$ that look good, or removing them if some of them seem to be wrong. But this has do be done differently depending on the spectrum itself and depending on $|a|$, i.e. how many lines are already assigned. 
+Due to the commonly normal distribution of $x_e$ around $x_0$, residuals $x_e - x_p$ (often called \lq\lq{}obs minus calc\rq\rq{}) can be seen as estimates of $x_p - x_0$. This is important for obtaining a reasonable model. 
+
+%Alas, there is no way to be certain about if $a = a_0$, because $a$ is not directly observable. I will therefore often write about \lq\lq{}almost correct\rq\rq{} assignments, meaning those that share almost all $(q, x_e)$ pairs with $a_0$ except for only a relatively small amount of those pairs. %Additionally, experimental spectra often contain mixtures of $m > 1$ different species. In that case, there may be several correct assignments ${a_0}_i$, $i = 1, ... m$.
+%A line assignment improvement step in fitting means adding pairs $(q, x_e)$ to $a$ that look good, or removing them if some of them seem to be wrong. But this has do be done differently depending on the spectrum itself and depending on $|a|$, i.e. how many lines are already assigned. 
 
  % a peak finder will find $E$ as a mixture of different $E_1, ... E_m$. Some peaks can also be blended between species, i.e. possibly $\exists e \in E: e \in E_i, e \in E_j, i \neq j$. Probably, separate models $M_1, ..., M_m$ and, accordingly, separate $P_1, ..., P_m$ will be available. But each of $P_1, ..., P_m$ (or at least the first one) has to be assigned to the whole experimental data $E$. There is still one (and only) correct and complete assignment ${a_0}_i$ for each $P_i$, $i = 1, ..., m$. But starting from some model ${M}_i$ we might under some circumstances get a partly correct assignment for another model, i.e. $a \approx {a_0}_j$, $j \neq i$.
 
 %A pair $(M, a)$ represents the current analysis status rather then $M$ alone. 
 
-Depending on $|a|$, we distinguish \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage.
+\subsection{Stages of assignment}
 
-The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. This may be challenging, because initial parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order, so that assigning to the nearest in sense of $|x_p - x_e|$ often results in totally wrong assignments, which may be noticed only later and rise a need to go many steps back. 
+Depending on $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage.
+
+The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. In the early stage, model parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order. 
 
 The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_p - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model, e.g. Hamiltonian distortions to describe transitions with higher frequencies and quantum numbers.  
 
