@@ -2,7 +2,7 @@
 \documentclass[11pt]{article} 
 \usepackage{styles/preamble_diss}
 
-\title{Strategic assignment materials}
+\title{Strategic spectral line assignment}
 \author{Kirill Borisov}
 
 \begin{document}
@@ -14,49 +14,45 @@
 \tableofcontents
 \newpage
 
+\section{Introduction}
 
-\section{The way towards automated molecular spectra analysis}
 
-In this chapter, procedures for analysis and fitting rotational molecular spectra analysis are described along with tools and methods for this task. That leads to a discussion of new approaches with a focus on automation (reducing human effort). Examples are given with spectra of three molecules with increasing complexity of their spectra: OCS, vinyl cyanide (acrylonitrilie) and thiazole. Among them OCS is the simplest case, a linear top; the other two molecules are asymmetric tops: vinyl cyanide has a slightly crinkled carbon chain with a cyano (CN) group at the end and hence it is a nearly prolate top; thiazole is a ring molecule, oblate but highly asymmetric ($\kappa=-0,166$).    
+%In this chapter, procedures for analysis and fitting rotational molecular spectra analysis are described along with tools and methods for this task. That leads to a discussion of new approaches with a focus on automation (reducing human effort). Examples are given with spectra of three molecules with increasing complexity of their spectra: OCS, vinyl cyanide (acrylonitrilie) and thiazole. Among them OCS is the simplest case, a linear top; the other two molecules are asymmetric tops: vinyl cyanide has a slightly crinkled carbon chain with a cyano (CN) group at the end and hence it is a nearly prolate top; thiazole is a ring molecule, oblate but highly asymmetric ($\kappa=-0,166$).    
 
-\subsection{Molecular models and a standard fitting procedure}
+\subsection{Molecular models}
 
-In laboratories, experiments are usually conducted under known physical conditions $\mathfrak{C}$ (temperature, pressure, radiation etc.) until a phenomenon is understood good enough. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of the molecule or molecular ion (below we use the word \lq\lq{}molecule\rq\rq{} for both cases), which can be later used to predict how observations of those molecules look like under various conditions of observations and depending on conditions of observation. Thus, observational data under unknown conditions $\mathfrak{C}'$ can be compared with theoretical predictions and $\mathfrak{C}'$ can be deduced. Again, the model of the molecule is the knowledge we obtain from our laboratory experiments. 
+Laboratory experiments are usually conducted under known physical conditions $C$, such as temperature, pressure or electromagnetic fields, aiming to understand a certain phenomenon. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of molecules or molecular ions (below the word \lq\lq{}molecule\rq\rq{} is used for both cases), which can be used to predict spectra of those molecules under various conditions of observations and depending on conditions of observation. For instance, observational data under unknown conditions $C'$ can be compared with theoretical predictions and $C'$ can be deduced from them. Again, a model is the knowledge we obtain from experiments or observations. 
 
-The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $\mathfrak{C}$. Of course, it is unpractical. Therefore we usually need to summarize experimental data in relatively simple model, fully defined by only a few adjustable parameters $p_1, ..., p_n$. There is an obvious trade-off between prediction quality and model complexity.
+The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $C$. The disadvantages of this approach include heavy time and storage costs as well as limitations in achieving some $C$. Therefore usually experimental data are summarized in relatively simple models with only a relatively small number $n$ of parameters $p_1, ..., p_n$. There is an obvious trade-off between model prediction quality and model complexity in terms of $n$.
 
-A model of a molecule is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated function $\tilde{M}(\cdot | ): \{\mathfrak{C}\} \rightarrow \{S\}$, where ${\mathfrak{C}}$ are all possible physical conditions of observation, ${S}$ are possible predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that predicted spectrum $S$ is in some sense close to the experimental spectrum $E$.  
+A model of a molecule in molecular spectroscopy is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated mapping $(C, M) \rightarrow S$, where $C$ are possible conditions of observation and $S$ are corresponding predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that some given predicted spectrum $S$ is in some sense close to a given experimental (observed) spectrum $E$.  
 
-The exact procedure of constructing and fitting a spectroscopic model depends on the certain molecule, the tools 
+\subsection{Standard fitting procedure}
 
-Different scientists construct and fit spectroscopic models of molecules.
-
-Despite that, there is is a commonly used iterative fitting procedure, that is exclusively treated in this work: 
+There is is a commonly used iterative fitting procedure in molecular spectroscopy, which is exclusively treated in this work and below referred to as the \lq\lq{}standard fitting procedure\lq\lq{}: 
 
 \begin{enumerate}
-	\item Initialization: an initial model $M_0 = \{{p_1}, ..., {p_{n(0)}}\}$ is set up by educated guessing, extrapolation existing models or by \emph{ab inito} quantum calculation software. Here $n(0)$ is the initial amount of parameters; $n$ can change later. 
-	\item Parameter selection: there is a decision to be made about which parameters to actually fit, which to keep constant and which parameters to add or even remove from $M$ at each iteration.
-	\item Fitting: improvement of parameters ${p_1}_i, ..., {p_{n(i)}}_i \Rightarrow {p_1}_{i + 1}, ..., {p_{n(i)}}_{i + 1}$ by means of local or global optimization of a certain fintess function $f$. Here $i$ is the iteration index.
+	\item Initialize a model $M_0 = \{{p_1}, ..., {p_{n(0)}}\}_0$ by educated guessing, extrapolation existing models or by \emph{ab inito} quantum calculation software. Here $n(0)$ is the initial amount of parameters. 
+	\item Decide about which parameters to fit, which to keep constant and which parameters to add or even remove from $M$ = $\{{p_1}, ..., {p_{n(i)}}\}_i$ at iteration $i$.
+	\item Update parameters $\{{p_1}, ..., {p_{n(i)}}\}_i$ to $\{{p_1}, ..., {p_{n(i)}}\}_{i + 1}$ by means of local or global optimization of a certain fitness function $f$. 
 	\item Repeat (2) and (3) until some stop condition is reached.
 	
 \end{enumerate}
 
-This procedure seems quite straightforward, but the level of difficulty for this problem is actually hidden in defining  a specific fitness function $f$. 
+This procedure seems quite straightforward, but the level of difficulty for this problem is hidden in defining a specific fitness function $f$. 
 
-If $f$ depends only on a model $M$, the problem is a standard learning problem.
+If $f$ depends only on $M$, the problem can be classified as \lq\lq{}standard\lq\lq{} optimization with a solution $\tilde{M} = \arg\min f(M)$. In spectroscopy, an example of this case is $f = (S(M) - E)^2$, i.e. just the Euclidean difference between the observed and calculated spectra as a fitness function.
 
-In other cases $f$ relies and depends on a hidden (not directly observalbe) variable.
+However, in many practical cases of spectroscopy $f$ relies and depends on an additional variable $a$. This happens mainly because of certain limitations on direct comparison of $S$ and $E$ as in the above case. The value of $a$ is free to vary from iteration to iteration of the standard fitting procedure, so that $a$ can be regarded as specific conditional treatment of $E$ given the calculated spectrum $S_i(M_i)$ on some iteration $i$. This suggests that $a$ depends on $M$ and $E$, but doesn't require that $a$ depends \emph{only} on $M$ and $E$. 
 
-%This general SFP is similar to the expectation-maximization algorithm in statistics. The latter is also iterative and is used when a model is dependent on unobserved latent variables. In our case, possible ambiguity in the way how experimental data must be treated can be expressed in terms of an unobserved variable on which a special function depends, which we call metric.
+Therefore, in these cases not only $M$ determines the fit, but a pair $(M, a)$, and both variables must be optimized. A fitness function $f(M, a)$ would now assess the quality of both the model with its parameters and $a$, which can be an issue if partial optimization over $a$ and over $M$ would be indistinguishable. Another major issue is that $a$ is a \emph{hidden} variable in the sense that it it not directly observable from $E$.  %The latter represents treatment of experimental data and can vary from iteration to iteration.
+%The function $\phi$ from step (2) can be constructed in the sense of binding $a$: $\phi(M) = f(a | M)$.
 
-Let $a \in \mathfrak{A}$ be the unobserved variable. Then there is not only the model $M$ that determines the fit, but a pair $(M, a)$, and both must be optimized. A metric on $\mathfrak{A}$, $f(\cdot | M): \mathfrak{A}~\rightarrow~\R$ (or more generally, $f(\cdot | M): \mathfrak{A}~\rightarrow~Q$ with an arbitrary ordered quality space $Q$), would assess the quality of both the model with its parameters and $a$. %The latter represents treatment of experimental data and can vary from iteration to iteration.
-The function $\phi$ from step (2) can be constructed in the sense of binding $a$: $\phi(M) = f(a | M)$.
-
-Approaches to the SFP can be now classified by nature of $\mathfrak{A}$.
+Approaches to the standard fitting procedure in spectroscopy can be now classified by presence and nature of $a$:
 \begin{itemize}
-	\item Global fits. All experimental data is used at once in a (global) parameter optimization. No hidden variables.
-	\item Fits with spectral line assignment (two-quantum-state fits). $\mathfrak{A}$ are candidate spectral line assignments.
-	\item Fits with quantum state assignment (one-quantum-state fits). They use spectral lines to reconstruct individual quantum states from combination differences. $\mathfrak{A}$ are individual quantum state assignments.
+	\item Fits with no hidden variables, such as in case of $f = (S - E)^2$. 
+	\item Fits with spectral line assignment $a$.
+	\item Fits with quantum state assignment $a$. They use spectral lines to reconstruct individual quantum states from combination differences.
 \end{itemize}
 
 Let's consider fits with spectral line assignment. Spectral line assignment is by now a poorly automated and challenging task; nevertheless, fits with spectral line assignment are the most commonly used type. In a database like CDMS or JPL you find entries on molecular models with ready assignments.
@@ -65,7 +61,11 @@ Let's consider fits with spectral line assignment. Spectral line assignment is b
 
 %A spectrum line is an image of a quantum transition between two quantum states (see Introduction). 
 
-Imagine two sets of spectral lines: experimental lines $E$ and predicted lines $P$ (the latter are predicted by the model at some point in time). They are also often call observed lines and calculated lines (\lq\lq{}obs and calc\rq\rq{}). Each  line in $E$ is defined as a tuple $(x_e, ...)$ of peak position (frequency) and its other properties, such as intensity or width. Here, the peak position $x_e$ is unique. Often $E$ is extracted from raw experimental data with a peak finder. Each line in $P$ is also defined as a tuple $(q, x_p, ...)$ of predicted transition frequency $x_p$, identifier $q$ and other properties of the transition. The identifier $q$ must be unique among $P$. Commonly, transition quantum numbers serve that purpose. Frequencies $x_p$ may be not unique due to degeneracy. 
+Imagine two sets of spectral lines: experimental lines $E$ and predicted lines $P$. They are also often call observed lines and calculated lines (\lq\lq{}obs and calc\rq\rq{}). 
+
+Each  line in $E$ is defined as a tuple $(x_e, ...)$ of peak position (frequency) and its other properties, such as intensity or width. Here, the peak position $x_e$ is unique among $E$. Often experimental lines are extracted from raw experimental data with a peak finder.
+
+Each line in $P$ is also defined as a tuple $(q, x_p, ...)$ of predicted transition frequency $x_p$, identifier $q$ and other properties of the transition. The identifier $q$ must be unique among $P$. Commonly, transition quantum numbers serve that purpose. Frequencies $x_p$ may be not unique due to degeneracy. 
 
 We call an \emph{assignment} (denoted $a$) a surjection from $P_a \subset P$ to $E_a \subset E$, which is a mapping $g_a(\cdot): P_a \rightarrow E_a$ or, equivalently, a set of tuples: 
 \begin{equation}
@@ -109,6 +109,9 @@ The overall direction of traverse is from lower frequencies to higher frequencie
 
 Spectral line assignment requires sharp eyes: visual tools are used, such as SMAP, ASCP, PGOHPER. Since it is poorly automated, an obvious idea would be to start reducing human effort from here.
 
+\section{Methods}
+
+
 \subsection{AUTOFIT}
 
 AUTOFIT is a technology of automated spectral line assignment and a software with the same name originally developed by the Pate group. 
@@ -117,7 +120,7 @@ The original AUTOFIT is written in Python as a wrapper for Pickett SPFIT and SPC
 
 The PGOPHER version allows to fit all models that can be built in PGOPHER, i.e. linear, symmetric and asymmetric rotors with pure rotational constants  or ro-vibrational constants, including distortions.
 
-\subsubsection{Working principle of AUTOFIT}
+\subsubsection{Working principle}
 
 With some user input, AUTOFIT constructs a set of candidate assignments $\mathfrak{A}$. For each assignment $a \in \mathfrak{A}$ the software evaluates a metric $f(\cdot | M):~\mathfrak{A}~\rightarrow~Q$, where $Q$ is some ordered quality space. The output is a list of assignments sorted by $f(a) \in Q$, where the upper rows are, under certain conditions, more likely to be better assignments or even (almost) correct assignments than the lower rows. Of course, the magic hides in ways to define $\mathfrak{A}$ and $f$. These are the classical steps of AUTOFIT:
 
@@ -140,7 +143,7 @@ As you can notice, the check transitions are \emph{not} being fit at all in the 
 
 %There are still some degrees of freedom left in this algorithm: how do we select these meta parameters for AUTOFIT: $S$, $C$, $\Delta s$, $\Delta c$? Here are some considerations.
 
-\subsubsection{Selecting meta parameters of AUTOFIT}
+\subsubsection{Selecting meta parameters}
 
 \paragraph{Search windows size.}
 
@@ -208,7 +211,13 @@ The output assignments will be listed in the Autofit window as rows in a table. 
 
 Since 2018 there is also a Nearest Lines Plot instrument in PGOPHER, which is discussed in the corresponding section below. Also a Loomis-Woods diagram is available as an instrument.
 
-\subsubsection{Example - OCS}
+\subsection{Nearest Lines Tool}
+\subsubsection{Working principle}
+\subsubsection{Workflow in PGOPHER}
+
+
+\section{Examples}
+\subsection{OCS}
 
 OCS is a linear molecule with a dipole moment of $0.715(1)$ D. Its rotational transition frequencies are well known; this molecule is often used for calibrating and testing new spectrometers or spectra analysis methods. Every nucleus of OCS has two or more stable isotopes, giving room for many isotopologues of OCS. Data for most single substituted and some double substituted isotopologues is available in CDMS.
 
@@ -256,7 +265,7 @@ But there is also at least one more strategy that can be used: adding another fi
 
 With all transitions up to 300 GHz assigned, we consider the early stage of assignment complete for this case. Transitions with higher frequencies can be assigned by using the Nearest method -- one only has to worry about floating additional distortions at some point. 
 
-\subsubsection{Example - vinyl cyanide}
+\subsection{Vinyl cyanide}
 
 Vinyl cyanide ($\rm C_2H_3CN$), also known as acrylonitrile or propenenitrile, is an important molecule in space: it has been detected in the Sagittarius B2 star forming region, in dark clouds, circumstellar envelopes, in Titan atmosphere. The molecule is a highly prolate asymmetric top with $\kappa = -0.9798$ for the main isotopic species in its ground vibrational state and two nonzero electric dipole moments $\mu_a = 3.816(3)$ D and $\mu_b = 0.687(8)$ D.  
 
@@ -282,7 +291,7 @@ What also can be noticed is that for some lower Kas the lines are in a sense iso
 
 Patterns consist of calc transitions repeatedly positioned together at different quantum numbers. There are true patterns and false patterns. Also, already assigned lines from the current species or other isotopologues and vibrational states play a big role. And also the intensity ratios play a big role, thought only locally, and only ratios, not the absolute intensities, for most experiments done, algthough there are experiments which are calibrated to absolute intensities.
  
-\subsubsection{Example - thiazole}
+\subsection{Thiazole}
 
 Thiazole is a ring molecule, well known in infrared, whose vibrationally excited rotation states had not been investigated before. In this work, new analysis methods are applied to their investigation.
 
