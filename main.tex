@@ -114,6 +114,7 @@ Rotational quantum states are labeled with quantum numbers $Q = (J, {K_a}, {K_c}
 
 Rotational transitions are labeled with quantum numbers of the lower and the upper quantum states:
 \begin{equation} 
+\label{quantum_numbers}
 q = (Q', Q'') = (J', {K_a}', {K_c}', ...; J'', {K_a}'', {K_c}'', ...).
 \end{equation}
 The variables with one prime ($'$) belong to the upper quantum state, and those with double prime ($''$) belong to the lower quantum state. 
@@ -134,19 +135,20 @@ x_p(J', J''\, |\, v_0, B', B'', D', D'', ...) = \\
 \end{multline}
 with the model $M = \{v_0, B', B'', D', D'', ...\}$. Traditionally, the model parameters here are called rotational constants and distortions.
 
+If the rotor is a symmetric or asymmetric molecule, there are groups of parameters which depend more on $J$, on $K_a$ and on $K_c$.\todo{Details here!}
+
 \subsection{Structure of rotational spectra}
 
-For assignment of rotational spectra to models where transitions are labeled with quantum numbers $q = (J', ...; J'', ...)$, lines are commonly assigned in groups or series of two different kind:
+For assignment of rotational spectra to models where transitions are labeled with quantum numbers according to \ref{quantum_numbers}, lines are commonly divided into  groups, series and branches according to some filtering of the quantum number values in the upper state ($Q'$, lower state ($Q''$) and the change of quantum numbers between the two states ($\Delta Q$):
 \begin{itemize}
-	\item Groups of transitions with the same value of quantum number $J'$ or $J''$ ($K$-ladders). 
-% TODO: (in symmetric and asymmetric tops often called $K$-ladders because of splitting by different $K_a$ and/or $K_c$ values). -> move to introduction
-The overall direction of traverse is from lower frequencies to higher frequencies, which correspond with going from lower $J$ values to higher $J$ values.  
-	\item Groups of transitions with the same $K_a$ or $K_c$ value, which resemble linear top spectra as part of more complex spectra.
+	\item Groups of transitions with the same value of quantum number $J'$ or $J''$. In symmetric and asymmetric tops they are called $K$-ladders because of splitting by different $K_a$ and/or $K_c$ values. Spin effects can introduce additional splitting.  
+	\item Series of transitions with the same $K_a$ or $K_c$ value, which resemble linear top spectra as part of more complex spectra.
+	\item Transitions with $\Delta J = +1$, $0$ and $-1$ are called R-branch, Q-branch and P-branch respectively. Transitions belonging to different branches have different dependency on model parameters.\todo{Details here!}
+	\item Transitions caused by different dipole moment components are called a-type, b-type and c-type transitions. 
 \end{itemize}
 
-Spectral line assignment requires sharp eyes: visual tools are used, such as SMAP, ASCP, PGOHPER. Since it is poorly automated, an obvious idea would be to start reducing human effort from here.
 
-
+It is reasonable\todo{Why?} to respect the structure of the spectrum during its assignment. The overall direction of assignment is from lower frequencies to higher frequencies, which correspond with going from lower $J$ values to higher $J$ values. 
 
 \subsection{AUTOFIT}
 
