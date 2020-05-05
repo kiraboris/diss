@@ -2,7 +2,7 @@
 \documentclass[11pt]{article} 
 \usepackage{styles/preamble_diss}
 
-\title{Strategic spectral line assignment}
+\title{Strategic fitting and spectral line assignment in rotational molecular spectroscopy}
 \author{Kirill Borisov}
 
 \begin{document}
@@ -43,14 +43,14 @@ This procedure seems quite straightforward, but the level of difficulty for this
 
 If $f$ depends only on $M$, the problem can be classified as \lq\lq{}standard\lq\lq{} optimization with a solution $\tilde{M} = \arg\min f(M)$. In spectroscopy, an example of this case is $f = (S(M) - E)^2$, i.e. just the Euclidean difference between the observed and calculated spectra as a fitness function.
 
-However, in many practical cases of spectroscopy $f$ relies and depends on an additional variable $a$. This happens mainly because of certain limitations on direct comparison of $S$ and $E$ as in the above case. The value of $a$ is free to vary from iteration to iteration of the standard fitting procedure, so that $a$ can be regarded as specific conditional treatment of $E$ given the calculated spectrum $S_i(M_i)$ on some iteration $i$. This suggests that $a$ depends on $M$ and $E$, but doesn't require that $a$ depends \emph{only} on $M$ and $E$. 
+However, in many practical cases of spectroscopy $f$ relies and depends on an additional variable $a$. This happens mainly because of certain limitations on direct comparison of $S$ and $E$. The value of $a$ is free to vary from iteration to iteration of the standard fitting procedure, so that $a$ can be regarded as specific conditional treatment of the experiment $E$ given the calculated spectrum $S_i(M_i)$ on some iteration $i$. This suggests that $a$ depends on $M$ and $E$, but doesn't require that $a$ depends \emph{only} on $M$ and $E$. 
 
-Therefore, in these cases not only $M$ determines the fit, but a pair $(M, a)$, and both variables must be optimized. A fitness function $f(M, a)$ would now assess the quality of both the model with its parameters and $a$, which can be an issue if partial optimization over $a$ and over $M$ would be indistinguishable. Another major issue is that $a$ is a \emph{hidden} variable in the sense that it it not directly observable from $E$.  %The latter represents treatment of experimental data and can vary from iteration to iteration.
+Therefore, in these cases not only $M$ determines the fit, but a pair $(M, a)$, and both variables must be optimized. A fitness function $f(M, a)$ would now assess the quality of both the model with its parameters and $a$, which can be an issue if partial optimization over $a$ and over $M$ would be indistinguishable. %Another major issue is that $a$ is a \emph{hidden} variable in the sense that it it not directly observable from $E$.  %The latter represents treatment of experimental data and can vary from iteration to iteration.
 %The function $\phi$ from step (2) can be constructed in the sense of binding $a$: $\phi(M) = f(a | M)$.
 
 Approaches to the standard fitting procedure in spectroscopy can be now classified by presence and nature of $a$:
 \begin{itemize}
-	\item Fits with no hidden variables, such as in case of $f = (S - E)^2$. 
+	\item Fits with no additional variables (as in case of $f = (S - E)^2$). 
 	\item Fits with spectral line assignment $a$.
 	\item Fits with quantum state assignment $a$. They use spectral lines to reconstruct individual quantum states from combination differences.
 \end{itemize}
@@ -69,13 +69,13 @@ Each line in $P$ is also defined as a tuple $(q, x_p, ...)$ of predicted transit
 
 Both $E$ and $P(M)$ are estimates of the same thing -- transitions of a molecule. There is a real transition frequency $x_0$ in nature. The discrepancy between  $x_e$ and $x_0$ arises from imperfectness of experiments; the discrepancy between $x_e$ and $x_p$ arises from the imperfectness of experiments \emph{and} $M$.
 
-We call an \emph{assignment} (denoted $a$) a surjection from $P_a \subset P$ to $E_a \subset E$, which means that multiple predicted transitions can be assigned to the same experimental peak. It can described with a subset of tuples: 
+We call an \emph{assignment} (denoted $a$) a surjection\footnote{That means that multiple predicted transitions can be assigned to the same experimental peak.} from $P_a \subset P$ to $E_a \subset E$. It can described with a subset of tuples: 
 \begin{equation}
 \label{def_assignment}
 	a \subset \{(q, x_p, x_e, ...): (q, x_p, ...) \in P_a; (x_e, ...) \in E_a\}.
 \end{equation}
 
-We imply that there is one, and only one, correct \emph{complete} assignment $a_0(E, P)$ for any given $E$ and $P$, among the possible assignments. As stated in the previous section, a fitness function $f(M, a)$ would assess the quality of both an assignment $a$ and the model $M$. In case $a = a_0$, function $f$ can obviously just optimize the model parameters $p_1, ..., p_n$. If $a_0$ cannot be constructed at once, the next best thing to use are correct \emph{partial} assignments $a \subset a_0$, and a good $f$ should not depend on $a$, given $a \subset a_0$, more than on $M$.
+We imply that there is one, and only one, correct and complete assignment $a_0(E, P)$ for any given $E$ and $P$, among the possible assignments. As stated in the previous section, a fitness function $f(M, a)$ would assess the quality of both an assignment $a$ and the model $M$. In case $a = a_0$, function $f$ can obviously just optimize the model parameters $p_1, ..., p_n$. If $a_0$ cannot be constructed at once, the next best thing to use are correct \emph{partial} assignments $a \subset a_0$, and a good $f$ should not depend on $a$, given $a \subset a_0$, more than on $M$.
 
 The fitness function is typically using some distance between $E$ and $P$. If only transition frequencies are taken into account, the root mean square (RMS) of the residuals is commonly used:
 \begin{equation}
@@ -94,13 +94,47 @@ Due to the commonly normal distribution of $x_e$ around $x_0$, residuals $x_e - 
 
 \subsection{Stages of assignment}
 
-Depending on $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage.
+Depending on amount of assigned lines $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage\footnote{More precisely, not just the total amount of assigned transitions describes the overall stage of assignment, but also the amount of assigned lines in some distinct categories of transitions describe the stage of assignment in that category. See next chapter for the quantum-mechanical description of these categories.}.
 
 The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. In the early stage, model parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order. 
 
-The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_p - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model, e.g. Hamiltonian distortions to describe transitions with higher frequencies and quantum numbers.  
+The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_p - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model to describe more transitions.  
 
-The intermediate stage is everything in between. You may try assigning simulated lines to nearest experimental peaks, but you still have to select one from several possible options sometimes, and eventually traverse a decision tree to get the best assignment.
+The intermediate stage is everything in between. You may try assigning simulated lines to nearest experimental peaks, but you still have to select one from several possible options.
+
+In the next chapter, specific methods will be introduced to tackle each state of assignment and fitting in rotational molecular spectroscopy.
+
+\section{Methods}
+
+\subsection{Quantum models of a rotor}
+
+Under certain conditions, the rotation of a molecule in $3$-dimensional space can be described by means of quantum mechanics, i.e. by solving the energy eigenstate problem. The resulting eigenstates are called rotational quantum states. 
+
+Rotational quantum states are labeled with quantum numbers $Q = (J, {K_a}, {K_c}, ...)$, which describe quantified rotation momentum in $3$-dimensional space. Quantum transitions occur as a change in quantum state. Depending on the symmetry of the molecule, some changes in quantum state are allowed and others are forbidden\footnote{In special cases of $C_{\inf}$ symmetry (symmetric rotors and linear rotors), the quantum states themselves are simplified to only $2$ or even $1$ dimension(s). More details in textbooks.}. 
+
+Rotational transitions are labeled with quantum numbers of the lower and the upper quantum states:
+\begin{equation} 
+q = (Q', Q'') = (J', {K_a}', {K_c}', ...; J'', {K_a}'', {K_c}'', ...).
+\end{equation}
+The variables with one prime ($'$) belong to the upper quantum state, and those with double prime ($''$) belong to the lower quantum state. 
+
+The rotational spectrum of a molecule consists of transitions $(q, x, ...)$, and within a quantum-mechanical description, the transition frequencies $x$ are proportional to differences in quantum state energies:
+\begin{equation} 
+\label{einstein_photon_energy}
+ x(q) = \frac{1}{h}(E(Q') - E(Q'')).
+\end{equation} 
+
+In respect to the standard fitting procedure (see Introduction), a quantum model of a molecule is such a model $M = \{p_1, ..., p_n\}$ that predicts the energies $E_p(Q)$ of quantum states $Q$ as a function of $p_1, ..., p_n$. According to \ref{einstein_photon_energy}, predicted energy levels yield a predicted spectrum $S$ of a molecule (under given physical conditions $C$), based on its quantum states, state by state. 
+
+In simple cases $M$ can be written down analytically as a polynomial of quantum numbers. If, for example, the rotor is a linear molecule, where the only remaining quantum number is $J$, the predicted line frequencies $x_p$ can be expressed as:
+\begin{multline}
+\label{linear_eigenvalues}
+x_p(J', J''\, |\, v_0, B', B'', D', D'', ...) = \\
+= v_0 + B'J'(J'+1) - B''J''(J''+1) - D'{J'}^2(J'+1)^2 + D''{J''}^2(J''+1)^2 + ... 
+\end{multline}
+with the model $M = \{v_0, B', B'', D', D'', ...\}$. Traditionally, the model parameters here are called rotational constants and distortions.
+
+\subsection{Structure of rotational spectra}
 
 For assignment of rotational spectra to models where transitions are labeled with quantum numbers $q = (J', ...; J'', ...)$, lines are commonly assigned in groups or series of two different kind:
 \begin{itemize}
@@ -112,7 +146,6 @@ The overall direction of traverse is from lower frequencies to higher frequencie
 
 Spectral line assignment requires sharp eyes: visual tools are used, such as SMAP, ASCP, PGOHPER. Since it is poorly automated, an obvious idea would be to start reducing human effort from here.
 
-\section{Methods}
 
 
 \subsection{AUTOFIT}
@@ -173,12 +206,7 @@ This may be the easiest meta  parameter to choose. There must be enough check tr
 
 The AUTOFIT manual suggest to choose it equal to the experimental peak width. But a careful look reveals that a $\Delta c$ value equal to the experimental peak width is only the minimum value for $\Delta c$. This approach only covers obs minus calc  with zero mean, $\mean (x_e - x_p) = 0$, where $x_e$ considered stochastic variables. Taking the real transition frequency $x_0$ again, $\mean (x_e - x_0) = 0$ usually holds (and also $x_e$ have a normal distribution). But that doesn't cover \lq\lq{}systematic\rq\rq{} deviations with nonzero mean, which may be introduced to $x_p$ by a non-adequate model.
 
-Commonly  model parameters are coefficients of a Hamiltonian eigenvalue expression. It contains some main terms and some terms derived from a perturbation Hamiltonian. These perturbation terms form an endless series, which has to be truncated adequately at some point. In particular, PGOPHER works with rotor Hamiltonians. If, for example, the rotor is a linear molecule, the predicted line frequencies will be expressed as:
-\begin{multline}
-\label{linear_eigenvalues}
-x_p(J', J''\, |\, v_0, A', A'', D', D'', ...) = \\
-= v_0 + B'J'(J'+1) - B''J''(J''+1) - D'{J'}^2(J'+1)^2 + D''{J''}^2(J''+1)^2 + ... 
-\end{multline}
+Commonly  model parameters are coefficients of a Hamiltonian eigenvalue expression. It contains some main terms and some terms derived from a perturbation Hamiltonian. These perturbation terms form an endless series, which has to be truncated adequately at some point. In particular, PGOPHER works with rotor Hamiltonians. 
 
 There are two possible deviation sources in connection with this, arising from both insufficient and over-sufficient amount of experimental data in the fit:
 \begin{enumerate}
