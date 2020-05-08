@@ -263,12 +263,34 @@ The output assignments will be listed in the Autofit window as rows in a table. 
 
 %Since 2018 there is also a Nearest Lines Plot instrument in PGOPHER, which is discussed in the corresponding section below. Also a Loomis-Woods diagram is available as an instrument.
 
-\subsection{Nearest Lines Tool}
+\subsection{Nearest Lines Plot}
+
+There are some graphical tools available, which reinforce the search for series and branches of lines. The two basic ideas behind visual tools are:
+\begin{enumerate}
+    \item Humans are trained to recognize patterns with bare eye,
+    \item Lines in a series or branch often have systematic obs - calc residuals which arise from the imperfectness of the model $M$ (see above)\todo{Move that explanation to Introduction}. 
+\end{enumerate}
+
+The commonly used visual tools for selecting and assigning a whole series or branch of lines at once are:
+\begin{itemize}
+    \item Fotrait Plot,
+    \item Loomis-Wood Plot,
+    \item Nearest Lines Plot.
+\end{itemize}
+
+We will talk about the last one. 
+
 \subsubsection{Working principle}
-\subsubsection{Meta parameters}
+
+A nearest lines plot is basically a scatter plot, where individual points represent assignment possibilities for observed lines. The plot has residuals on the Y axis and frequency, quantum number or an arbitrary label of a line on the X axis. The name nearest lines comes from the idea that at a given X position the plot points represent nearest observed peaks observed peaks for a predicted line peak under consideration. 
+
 \subsubsection{Workflow in PGOPHER}
 
+In PGOPHER the usual way to go is to select a series or branch of predicted transitions using the Transitions Window and append it to the Line List. Then, you open the Nearest Line Plot and typically use the Filter option there, which filters only the selected series or branch in a chosen frequency range. 
 
+Since 2019, the Nearest Lines Plot also has an intensity filter, which works the following way: you can use the variables $I_{obs}$ and $I_{calc}$ and form some kind of inequality with them, such as $I_{obs} / I_{calc} > \eta$.
+
+Finally, you select the area with the correct assignment candidates with the mouse and click Assign Points Inside. You can assign tens to hundreds of lines at once like this. 
 \section{Examples}
 \subsection{OCS}
 
