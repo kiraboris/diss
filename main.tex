@@ -291,6 +291,22 @@ In PGOPHER the usual way to go is to select a series or branch of predicted tran
 Since 2019, the Nearest Lines Plot also has an intensity filter, which works the following way: you can use the variables $I_{obs}$ and $I_{calc}$ and form some kind of inequality with them, such as $I_{obs} / I_{calc} > \eta$.
 
 Finally, you select the area with the correct assignment candidates with the mouse and click Assign Points Inside. You can assign tens to hundreds of lines at once like this. 
+\subsection{Global Fitter}
+
+The one question which must be addressed when talking about fits with assignments (see Introduction) is when do we need them, and when it is sufficient to use a direct fit of the experimental spectrum $E$ to the simulated spectrum $S(M)$ with a model $M$, e.g. a quantum model of the molecule.
+
+Consider a fitness function 
+\begin{equation}
+    f(S, E) = |a|: a = \{x_e, x_s, q, ...: |x_e - x_s| < \varepsilon\}.
+\end{equation}
+This fitness function call be called number of well positioned lines with tolerance $\varepsilon$.
+
+It turns out that for the whole parameter space of a typical spectroscopic model $M$, the error landscape of this fitness function $f$ is quite flat with a single delta-formed maximum. 
+
+That means, it is not possible to find the global maximum of $f$ from a starting point which is far away from it in parameter space. However, it is easy to locally optimize the model $M$ as soon as the starting point is at the slope. 
+
+For a typical spectroscopic model it means that as soon as the rotational constants $A$, $B$, $C$ and the quatric distortions $D_J$, $D_{JK}$, $D_K$, $d_J$ and $d_K$ are good enough, higher-order distortions can be found by optimizing $f$.
+
 \section{Examples}
 \subsection{OCS}
 
