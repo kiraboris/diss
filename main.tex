@@ -94,7 +94,7 @@ Due to the commonly normal distribution of $x_e$ around $x_0$, residuals $x_e - 
 
 \subsection{Stages of assignment}
 
-Depending on amount of assigned lines $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage\footnote{More precisely, not just the total amount of assigned transitions describes the overall stage of assignment, but also the amount of assigned lines in some distinct categories of transitions describe the stage of assignment in that category. See next chapter for the quantum-mechanical description of these categories.}.
+Depending on amount of assigned lines $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage\footnote{More precisely, not just the total amount of assigned transitions describes the overall stage of assignment, but also the amount of assigned lines in some distinct categories of transitions describe the stage of assignment in that category. See section 1.6.}.
 
 The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. In the early stage, model parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order. 
 
@@ -104,13 +104,13 @@ The intermediate stage is everything in between. You may try assigning simulated
 
 In the next chapter, specific methods will be introduced to tackle each state of assignment and fitting in rotational molecular spectroscopy.
 
-\section{Methods}
-
 \subsection{Quantum models of a rotor}
 
 Under certain conditions, the rotation of a molecule in $3$-dimensional space can be described by means of quantum mechanics, i.e. by solving the energy eigenstate problem. The resulting eigenstates are called rotational quantum states. 
 
-Rotational quantum states are labeled with quantum numbers $Q = (J, {K_a}, {K_c}, ...)$, which describe quantified rotation momentum in $3$-dimensional space. Quantum transitions occur as a change in quantum state. Depending on the symmetry of the molecule, some changes in quantum state are allowed and others are forbidden\footnote{In special cases of $C_{\inf}$ symmetry (symmetric rotors and linear rotors), the quantum states themselves are simplified to only $2$ or even $1$ dimension(s). More details in textbooks.}. 
+Rotational quantum states are labeled with quantum numbers $Q = (J, {K_a}, {K_c}, ...)$, which describe quantified rotation momentum in $3$-dimensional space. In special cases of $C_{\infty}$ symmetry (symmetric rotors and linear rotors), the quantum states  are simplified to only $2$ or even $1$ dimension(s), with  quantum numbers $J$, $K$ for symmetric molecules and only $J$ for linear ones. Molecules with all $3$ quantum numbers are called asymmetric molecules, even if they have some symmetry group inferior to $C_{\infty}$, e.g. $C_{2v}$. 
+
+Quantum transitions occur as a change in quantum state. Depending on the symmetry of the molecule, some changes in quantum state are allowed and others are forbidden. This is called selection rules.
 
 Rotational transitions are labeled with quantum numbers of the lower and the upper quantum states:
 \begin{equation} 
@@ -125,38 +125,50 @@ The rotational spectrum of a molecule consists of transitions $(q, x, ...)$, and
  x(q) = \frac{1}{h}(E(Q') - E(Q'')).
 \end{equation} 
 
-In respect to the standard fitting procedure (see Introduction), a quantum model of a molecule is such a model $M = \{p_1, ..., p_n\}$ that predicts the energies $E_p(Q)$ of quantum states $Q$ as a function of $p_1, ..., p_n$. According to \ref{einstein_photon_energy}, predicted energy levels yield a predicted spectrum $S$ of a molecule (under given physical conditions $C$), based on its quantum states, state by state. 
+In respect to the standard fitting procedure (see Introduction), a quantum model of a molecule is such a model $M = \{p_1, ..., p_n\}$ that predicts the energies $E_p(Q)$ of quantum states $Q$ as a function of $p_1, ..., p_n$. According to \ref{einstein_photon_energy}, predicted energy levels yield a predicted spectrum $S$ of a molecule (under some given physical conditions), based on its quantum states, state by state. 
 
-In simple cases $M$ can be written down analytically as a polynomial of quantum numbers. If, for example, the rotor is a linear molecule, where the only remaining quantum number is $J$, the predicted line frequencies $x_p$ can be expressed as:
+In simple cases $M$ can be written down analytically as a polynomial of quantum numbers. If, for example, the molecule is a linear one, the only remaining quantum number is $J$, and the predicted line frequencies $x_p$ can be expressed as:
 \begin{multline}
 \label{linear_eigenvalues}
-x_p(J', J''\, |\, v_0, B', B'', D', D'', ...) = \\
-= v_0 + B'J'(J'+1) - B''J''(J''+1) - D'{J'}^2(J'+1)^2 + D''{J''}^2(J''+1)^2 + ... 
+x_p(J', J''\, |\, v_0, B, D, ...) = \\
+= v_0 + BJ'(J'+1) - BJ''(J''+1) - D{J'}^2(J'+1)^2 + D{J''}^2(J''+1)^2 + ... 
 \end{multline}
-with the model $M = \{v_0, B', B'', D', D'', ...\}$. Traditionally, the model parameters here are called rotational constants and distortions.
+with the model $M = \{v_0, B, D, ...\}$. If the molecule is a symmetric rotor (has a $C_{\infty}$ symmetry axis), but not a linear one, $x_p$ can be expressed as:
+\begin{multline}
+\label{sym_eigenvalues}
+x_p(J', J'', K', K''\, |\, v_0, A, B, D_J, D_{JK}, D_K, ...) = \\ =
+v_0 + BJ'(J'+1) - BJ''(J''+1) + (A - B){K'}^2 - (A - B){K''}^2 - \\
+- D_J{J'}^2(J'+1)^2 + D_J{J''}^2(J''+1)^2 - D_{JK}{J'}(J'+1){K'}^2 + D_{JK}{J''}(J''+1){K''}^2 - \\ - D_K{K'}^4 + D_K{K''}^4 + ...
+\end{multline}
 
-If the rotor is a symmetric or asymmetric molecule, there are groups of parameters which depend more on $J$, on $K_a$ and on $K_c$.\todo{Details here!}
+%If the rotor is a symmetric or asymmetric molecule, the polynomial \ref{5} has terms with different combinations of  $J$, $K_a$ and $K_c$ dependence. 
 
 \subsection{Structure of rotational spectra}
 
-For assignment of rotational spectra to models where transitions are labeled with quantum numbers according to \ref{quantum_numbers}, lines are commonly divided into  groups, series and branches according to some filtering of the quantum number values in the upper state ($Q'$, lower state ($Q''$) and the change of quantum numbers between the two states ($\Delta Q$):
+For assignment of rotational spectra to models where transitions are labeled with quantum numbers according to \ref{quantum_numbers}, lines are commonly divided into  different categories according to some filtering of the quantum number values in the upper state ($Q'$), lower state ($Q''$) and the change of quantum numbers between the two states ($\Delta Q$):
 \begin{itemize}
-	\item Groups of transitions with the same value of quantum number $J'$ or $J''$. In symmetric and asymmetric tops they are called $K$-ladders because of splitting by different $K_a$ and/or $K_c$ values. Spin effects can introduce additional splitting.  
-	\item Series of transitions with the same $K_a$ or $K_c$ value, which resemble linear top spectra as part of more complex spectra.
-	\item Transitions with $\Delta J = +1$, $0$ and $-1$ are called R-branch, Q-branch and P-branch respectively. Transitions belonging to different branches have different dependency on model parameters.\todo{Details here!}
-	\item Transitions caused by different dipole moment components are called a-type, b-type and c-type transitions. 
+	\item Transitions with the same value of quantum number $J' = J_0$, but different $K'$ (for symmetric molecules), different $K_a'$ (for prolate asymmetric molecules), or different $K_c'$ (for oblate asymmetric molecules) are called $K$-ladders or $K$-splitting, because they look much like splitting of the $J_0$ line, visible (detectable) within relatively small frequency ranges. Spin effects can introduce additional splitting.  
+	\item Transitions with the same $K' = K_0$, $K_a' = K_0$ or $K_c' = K_0$ value are called series, because they resemble simple, linear type spectra as part of more complex spectra of symmetric and asymmetric molecules, and are visible (detectable) over relatively large frequency ranges.
+	\item Transitions with $\Delta J = +1$, $0$ and $-1$ are called R-branch, Q-branch and P-branch respectively with capital R, Q, P. Additional quantum numbers get a similar notation with additional lowercase letters r, q, p. For instance, symmetric molecule spectum brances can be denoted as qR, pQ and so on. 
+	\item Transitions caused by different Cartesian dipole moment components along the axes $a$, $b$ and $c$ are called a-type, b-type and c-type transition respectively. Different selection rules apply to different types of transitions, and each type contains a subset of possible branches. For instance, the qR branch is a-type.
+	
 \end{itemize}
 
+It is reasonable to respect the structure of the spectrum during assignment. For example, transitions belonging to different branches have different dependency on model parameters. If in expression \ref{sym_eigenvalues} let if let $K' = K''$, the dependence on $A$ and $D_K$ will cancel. This means that, for instance, $A$ and $D_K$ cannot be fit to just qR lines. 
 
-It is reasonable\todo{Why?} to respect the structure of the spectrum during its assignment. The overall direction of assignment is from lower frequencies to higher frequencies, which correspond with going from lower $J$ values to higher $J$ values. 
+The overall direction of assignment is from lower frequencies to higher frequencies, which correspond with going from lower $J$ values to higher $J$ values. 
+
+\section{Methods}
+
+%This chapter describes methods used for strategic spectral line assignment. 
 
 \subsection{AUTOFIT}
 
 AUTOFIT is a technology of automated spectral line assignment and a software with the same name originally developed by the Pate group. 
 
-The original AUTOFIT is written in Python as a wrapper for Pickett SPFIT and SPCAT programs. It is primarily designed for the early stage of assignment and restricts to models of rigid asymmetric tops with 3 rotational constants (A, B, C).  No additional constants are added during the process (except for so-called refinement in the very end, which is actually not automatic). These can be considered as major drawbacks that are lifted in the fairly new AUTOFIT feature inside PGOPHER. 
+The original AUTOFIT is written in Python as a wrapper for Pickett SPFIT and SPCAT programs. It is primarily designed for the early stage of assignment and restricts to models of rigid asymmetric molecules with 3 rotational constants (A, B, C).  No additional constants are added during the process (except for so-called refinement in the very end, which is not automatic). These can be considered as drawbacks that were lifted in the AUTOFIT feature of PGOPHER. 
 
-The PGOPHER version allows to fit all models that can be built in PGOPHER, i.e. linear, symmetric and asymmetric rotors with pure rotational constants  or ro-vibrational constants, including distortions.
+The PGOPHER version allows to fit all models that can be built in PGOPHER. For the purpose of this work, it can fit linear, symmetric and asymmetric molecules with rotational constants and including distortions.
 
 \subsubsection{Working principle}
 
@@ -181,7 +193,7 @@ As you can notice, the check transitions are \emph{not} being fit at all in the 
 
 %There are still some degrees of freedom left in this algorithm: how do we select these meta parameters for AUTOFIT: $S$, $C$, $\Delta s$, $\Delta c$? Here are some considerations.
 
-\subsubsection{Selecting meta parameters}
+\subsubsection{Meta parameters}
 
 \paragraph{Search windows size.}
 
@@ -210,7 +222,7 @@ The AUTOFIT manual suggest to choose it equal to the experimental peak width. Bu
 
 Commonly  model parameters are coefficients of a Hamiltonian eigenvalue expression. It contains some main terms and some terms derived from a perturbation Hamiltonian. These perturbation terms form an endless series, which has to be truncated adequately at some point. In particular, PGOPHER works with rotor Hamiltonians. 
 
-There are two possible deviation sources in connection with this, arising from both insufficient and over-sufficient amount of experimental data in the fit:
+There are two possible deviation sources in connection with this, arising from both insufficient and over-sufficient amount of experimental data in the fit for the given parameter set. This can be seen on the example of a linear molecule (see expression \ref{linear_eigenvalues}):
 \begin{enumerate}
 	\item Expression \ref{linear_eigenvalues} may be truncated at a too early term, so that the model doesn't describe experimental data at high values of $J$ adequately;
 	\item Expression \ref{linear_eigenvalues} has enough terms to describe the data; however, there is not sufficient data for the higher order terms to be well defined. 
@@ -224,7 +236,7 @@ For the least squares method, an exact formula can be obtained for a systematic 
 % From this minimum value it can be increased until some stop condition is reached, e.g. until a test assignment doesn't change anymore or until there is a distinct correct assignment in the AUTOFIT output. 
 %Also $\Delta s$ can be increased in a similar fashion, starting from an initial guess. 
 
-Next, I wanted to analyze the output of AUTOFIT and develop a method to distinguish correct and \lq\lq{}almost correct\rq\rq{} assignments. For this task, I did some tests with different molecules in PGOPHER. 
+%Next, I wanted to analyze the output of AUTOFIT and develop a method to distinguish correct and \lq\lq{}almost correct\rq\rq{} assignments. For this task, I did some tests with different molecules in PGOPHER. 
 
 \subsubsection{Workflow in PGOPHER}
 
@@ -242,10 +254,11 @@ Since 2017 the early stage of assignment is reinforced by AUTOFIT. You can right
 
 The output assignments will be listed in the Autofit window as rows in a table. Each row is a separate assignment. On click on an output row the selected assignment is applied. Values of the fitness function $f = (n_{OK}, {RMS})$ are given in the first two columns: nOK is the number of assigned check transitions $n_{OK}$, Residual is their deviations' RMS (note that check transitions are not fitted).
 
-Since 2018 there is also a Nearest Lines Plot instrument in PGOPHER, which is discussed in the corresponding section below. Also a Loomis-Woods diagram is available as an instrument.
+%Since 2018 there is also a Nearest Lines Plot instrument in PGOPHER, which is discussed in the corresponding section below. Also a Loomis-Woods diagram is available as an instrument.
 
 \subsection{Nearest Lines Tool}
 \subsubsection{Working principle}
+\subsubsection{Meta parameters}
 \subsubsection{Workflow in PGOPHER}
 
 
