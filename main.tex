@@ -61,29 +61,29 @@ Let's consider fits with spectral line assignment. Spectral line assignment is b
 
 %A spectrum line is an image of a quantum transition between two quantum states (see Introduction). 
 
-Imagine two sets of spectral lines: experimental lines $E$ and predicted lines $P(M)$. They are also often called observed lines and calculated lines (\lq\lq{}obs and calc\rq\rq{}). 
+Imagine two sets of spectral lines: experimental lines $E$ and predicted lines $S(M)$. They are also often called observed lines and calculated lines (\lq\lq{}obs and calc\rq\rq{}). 
 
 Each  line in $E$ is defined as a tuple $(x_e, ...)$ of peak position (frequency) and its other properties, such as intensity or width. Here, the peak position $x_e$ is unique among $E$. Often experimental lines are extracted from raw experimental data with a peak finder.
 
-Each line in $P$ is also defined as a tuple $(q, x_p, ...)$ of predicted transition frequency $x_p$, identifier $q$ and other properties of the transition. The identifier $q$ must be unique among $P$. Commonly, transition quantum numbers serve that purpose. Frequencies $x_p$ may be not unique due to degeneracy. 
+Each line in $S$ is also defined as a tuple $(q, x_s, ...)$ of predicted transition frequency $x_s$, identifier $q$ and other properties of the transition. The identifier $q$ must be unique among $S$. Commonly, transition quantum numbers serve that purpose. Frequencies $x_s$ may be not unique due to degeneracy. 
 
-Both $E$ and $P(M)$ are estimates of the same thing -- transitions of a molecule. There is a real transition frequency $x_0$ in nature. The discrepancy between  $x_e$ and $x_0$ arises from imperfectness of experiments; the discrepancy between $x_e$ and $x_p$ arises from the imperfectness of experiments \emph{and} $M$.
+Both $E$ and $S(M)$ are estimates of the same thing -- transitions of a molecule. There is a real transition frequency $x_0$ in nature. The discrepancy between  $x_e$ and $x_0$ arises from imperfectness of experiments; the discrepancy between $x_e$ and $x_s$ arises from the imperfectness of experiments \emph{and} $M$.
 
-We call an \emph{assignment} (denoted $a$) a surjection\footnote{That means that multiple predicted transitions can be assigned to the same experimental peak.} from $P_a \subset P$ to $E_a \subset E$. It can described with a subset of tuples: 
+We call an \emph{assignment} (denoted $a$) a surjection\footnote{That means that multiple predicted transitions can be assigned to the same experimental peak.} from $S_a \subset S$ to $E_a \subset E$. It can described with a subset of tuples: 
 \begin{equation}
 \label{def_assignment}
-	a \subset \{(q, x_p, x_e, ...): (q, x_p, ...) \in P_a; (x_e, ...) \in E_a\}.
+	a \subset \{(q, x_s, x_e, ...): (q, x_s, ...) \in S_a; (x_e, ...) \in E_a\}.
 \end{equation}
 
-We imply that there is one, and only one, correct and complete assignment $a_0(E, P)$ for any given $E$ and $P$, among the possible assignments. As stated in the previous section, a fitness function $f(M, a)$ would assess the quality of both an assignment $a$ and the model $M$. In case $a = a_0$, function $f$ can obviously just optimize the model parameters $p_1, ..., p_n$. If $a_0$ cannot be constructed at once, the next best thing to use are correct \emph{partial} assignments $a \subset a_0$, and a good $f$ should not depend on $a$, given $a \subset a_0$, more than on $M$.
+We imply that there is one, and only one, correct and complete assignment $a_0(E, S)$ for any given $E$ and $P$, among the possible assignments. As stated in the previous section, a fitness function $f(M, a)$ would assess the quality of both an assignment $a$ and the model $M$. In case $a = a_0$, function $f$ can obviously just optimize the model parameters $p_1, ..., p_n$. If $a_0$ cannot be constructed at once, the next best thing to use are correct \emph{partial} assignments $a \subset a_0$, and a good $f$ should not depend on $a$, given $a \subset a_0$, more than on $M$.
 
-The fitness function is typically using some distance between $E$ and $P$. If only transition frequencies are taken into account, the root mean square (RMS) of the residuals is commonly used:
+The fitness function is typically using some distance between $E$ and $S$. If only transition frequencies are taken into account, the root mean square (RMS) of the residuals is commonly used:
 \begin{equation}
 \label{def_rms}
-	f_{RMS}(a) \propto \sum (x_e - x_p)^2\;{\rm with}\;a\;{\rm from}\;\ref{def_assignment}
+	f_{RMS}(a) \propto \sum (x_e - x_s)^2\;{\rm with}\;a\;{\rm from}\;\ref{def_assignment}
 \end{equation}
 
-Due to the commonly normal distribution of $x_e$ around $x_0$, residuals $x_e - x_p$ (often called \lq\lq{}obs minus calc\rq\rq{}) can be seen as estimates of $x_p - x_0$. This is important for obtaining a reasonable model. 
+Due to the commonly normal distribution of $x_e$ around $x_0$, residuals $x_e - x_s$ (often called \lq\lq{}obs minus calc\rq\rq{}) can be seen as estimates of $x_s - x_0$. This is important for obtaining a reasonable model. 
 
 %Alas, there is no way to be certain about if $a = a_0$, because $a$ is not directly observable. I will therefore often write about \lq\lq{}almost correct\rq\rq{} assignments, meaning those that share almost all $(q, x_e)$ pairs with $a_0$ except for only a relatively small amount of those pairs. %Additionally, experimental spectra often contain mixtures of $m > 1$ different species. In that case, there may be several correct assignments ${a_0}_i$, $i = 1, ... m$.
 %A line assignment improvement step in fitting means adding pairs $(q, x_e)$ to $a$ that look good, or removing them if some of them seem to be wrong. But this has do be done differently depending on the spectrum itself and depending on $|a|$, i.e. how many lines are already assigned. 
@@ -98,7 +98,7 @@ Depending on amount of assigned lines $|a|$, to be distinguished are \emph{stage
 
 The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. In the early stage, model parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order. 
 
-The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_p - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model to describe more transitions.  
+The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_s - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model to describe more transitions.  
 
 The intermediate stage is everything in between. You may try assigning simulated lines to nearest experimental peaks, but you still have to select one from several possible options.
 
@@ -127,16 +127,16 @@ The rotational spectrum of a molecule consists of transitions $(q, x, ...)$, and
 
 In respect to the standard fitting procedure (see Introduction), a quantum model of a molecule is such a model $M = \{p_1, ..., p_n\}$ that predicts the energies $E_p(Q)$ of quantum states $Q$ as a function of $p_1, ..., p_n$. According to \ref{einstein_photon_energy}, predicted energy levels yield a predicted spectrum $S$ of a molecule (under some given physical conditions), based on its quantum states, state by state. 
 
-In simple cases $M$ can be written down analytically as a polynomial of quantum numbers. If, for example, the molecule is a linear one, the only remaining quantum number is $J$, and the predicted line frequencies $x_p$ can be expressed as:
+In simple cases $M$ can be written down analytically as a polynomial of quantum numbers. If, for example, the molecule is a linear one, the only remaining quantum number is $J$, and the predicted line frequencies $x_s$ can be expressed as:
 \begin{multline}
 \label{linear_eigenvalues}
-x_p(J', J''\, |\, v_0, B, D, ...) = \\
+x_s(J', J''\, |\, v_0, B, D, ...) = \\
 = v_0 + BJ'(J'+1) - BJ''(J''+1) - D{J'}^2(J'+1)^2 + D{J''}^2(J''+1)^2 + ... 
 \end{multline}
-with the model $M = \{v_0, B, D, ...\}$. If the molecule is a symmetric rotor (has a $C_{\infty}$ symmetry axis), but not a linear one, $x_p$ can be expressed as:
+with the model $M = \{v_0, B, D, ...\}$. If the molecule is a symmetric rotor (has a $C_{\infty}$ symmetry axis), but not a linear one, $x_s$ can be expressed as:
 \begin{multline}
 \label{sym_eigenvalues}
-x_p(J', J'', K', K''\, |\, v_0, A, B, D_J, D_{JK}, D_K, ...) = \\ =
+x_s(J', J'', K', K''\, |\, v_0, A, B, D_J, D_{JK}, D_K, ...) = \\ =
 v_0 + BJ'(J'+1) - BJ''(J''+1) + (A - B){K'}^2 - (A - B){K''}^2 - \\
 - D_J{J'}^2(J'+1)^2 + D_J{J''}^2(J''+1)^2 - D_{JK}{J'}(J'+1){K'}^2 + D_{JK}{J''}(J''+1){K''}^2 - \\ - D_K{K'}^4 + D_K{K''}^4 + ...
 \end{multline}
@@ -172,53 +172,60 @@ The PGOPHER version allows to fit all models that can be built in PGOPHER. For t
 
 \subsubsection{Working principle}
 
-With some user input, AUTOFIT constructs a set of candidate assignments $\mathfrak{A}$. For each assignment $a \in \mathfrak{A}$ the software evaluates a metric $f(\cdot | M):~\mathfrak{A}~\rightarrow~Q$, where $Q$ is some ordered quality space. The output is a list of assignments sorted by $f(a) \in Q$, where the upper rows are, under certain conditions, more likely to be better assignments or even (almost) correct assignments than the lower rows. Of course, the magic hides in ways to define $\mathfrak{A}$ and $f$. These are the classical steps of AUTOFIT:
+With some user input, AUTOFIT constructs a set of candidate assignments. For each candidate assignment $a_c$ the software evaluates a fitness function $f(a_c)$. The output is a list of assignments sorted by $f(a_c)$, where the upper rows are, under certain conditions, more likely to be better assignments or even (almost) correct assignments than the lower rows. These are the classical steps of AUTOFIT:
 
 \begin{enumerate}
 	\item A peak finder is run on the experimental spectrum to construct $E$. Original AUTOFIT provides a built-in simple peak finder, which find all local maxima above a certain threshold on the Y axis, independent on the peak width or anything else. 
-	\item Provided an initial model $M_0$, an initial $P_0$ is generated (e.g. with SPCAT). Already assigned lines may be present before auto fitting -- the current assignment $a_{cur}$.
-	\item So-called fit transitions $S \subset P_0$ are selected by the user - typically as much as the number $n$ of model parameters. Also a search window size $\Delta s$ in frequency units is selected by the user.
-	\item So-called check transitions $C \subset P_0$ are selected by the user. Also a check window size $\Delta c$ in frequency units. 
-		\item Each transition $(q, x_p, ...) \in S$ is assigned to an experimental line $(x_e, ...) \in E$ if $|x_p - x_e| < \Delta s$. All combinations are tested; the set of all such sub-assignments is called $\mathfrak{a_s}$. For example, if there are 30 experimental peaks inside $\Delta f$ around each of the search transitions, $|\mathfrak{a_s}| = 30^{n}$ for fitting $n$ model parameters. If $\mathfrak{a_s}(S, E, \Delta s) = \emptyset$, AUTOFIT is considered to have failed. 
-		\item $\forall a_s \in \mathfrak{a_s}$, $a_{cur} + a_s$ are used in trial fits of the model $M$ (e.g. with SPFIT). This gives candidate models $M(a_s)$ and altered predicted transition sets $P(a_s)$. Based on labels (quantum numbers) of the predicted transitions, the initial fit transitions $S \in P_0$ and check transitions $C \in P_0$ are mapped into altered versions $S' \in P(a_s)$ and $C' \in P(a_s)$. 
+	\item Provided an initial model $M_0$, an initial spectrum $S_0$ is generated (e.g. with SPCAT). Already assigned lines may be present before auto fitting -- the current assignment $a_{cur}$.
+	\item So-called fit transitions $F \subset S_0$ are selected by the user - typically as much as the number $n$ of model parameters. Also a search window size $\Delta s$ in frequency units is selected by the user.
+	\item So-called check transitions $C \subset S_0$ are selected by the user. Also a check window size $\Delta c$ in frequency units. 
+	
+		\item Each transition $(q, x_s, ...) \in F$ is assigned to an experimental line $(x_e, ...) \in E$ if $|x_s - x_e| < \Delta s$. Let all possible assignments of this kind be called the search assignments $\{a_s\}$. For example, if there are 30 experimental peaks inside $\Delta s$ around each of the $n$ fit transitions, $|\{a_s\}| = 30^{n}$. If $\{a_s\} = \emptyset$, AUTOFIT is considered to have failed. 
+		\item For each $a_s$: $a_{cur} + a_s$ is used in a trial fit to the model $M$. This gives candidate models $M(a_s)$ and candidate predicted transition sets $S(a_s)$. Note that $S(a_s) \neq S_0$. Based on labels (quantum numbers) of the predicted transitions, the initial check transitions $C \in S_0$ are mapped into altered versions $C' \in S(a_s)$. 
 
-The AUTOFIT version in PGOPHER also provides an option to restrict parameters $p_1, ..., p_n$ of $M$ inside an n-dimensional cube. If for any ${a_s}_0$ parameters of $M({a_s}_0)$ evade from this cube, this sub-assignment is discarded.  It can speed up things drastically because of pruning at early fitting iterations.    
-		\item Transitions $(q, x_p, ...) \in C'$ are assigned to \emph{nearest} experimental lines $(x_e, ...) \in E$ if $|x_p - x_e| < \Delta c$. This sub-assignment is unique and based on $a_s$, so we call it $a_c(a_s)$. Zero or more check transitions are assigned, let's call this quantity $n_{OK}$.
-		\item  The candidate assignments set $\mathfrak{A}$ is constructed as $\{a_{cur} + a_s + a_c(a_s)\}\,\forall a_s \in \mathfrak{a_s}$.
-	\item Assignment metric $f(\cdot | M):~\mathfrak{A}~\rightarrow~Q$ is defined as a pair $(f_1, f_2)$, where $f_1 = n_{OK}$ is the amount of assigned check transitions, and $f_2 = f_{RMS}(a_c)$ is the RMS of assigned check transitions' deviations, $f_{RMS}$ defined in \ref{def_rms}. 
+		\item Transitions $(q, x_s, ...) \in C'$ are assigned to \emph{nearest} experimental lines $(x_e, ...) \in E$ if $|x_s - x_e| < \Delta c$. This assignment we call a candidate assignment $a_c = a_c(a_s)$. %The number of assigned check transitions $a_c(a_s)$  Zero or more check transitions are assigned, let's call this quantity $n_{OK}$.
+		%\item  The candidate assignments set $\mathfrak{A}$ is constructed as $\{a_{cur} + a_s + a_c(a_s)\}\,\forall a_s \in \mathfrak{a_s}$.
+		
+	\item The fitness function $f$ is defined as a pair $(f_1, f_2)$, where $f_1 = |a_c| = n_{OK}$ is the amount of assigned check transitions, and $f_2 = f_{RMS}(a_c)$ is the RMS of assigned check transitions' deviations with $f_{RMS}$ defined in \ref{def_rms}. 
 	\item AUTOFIT output contains pairs $(f_1, f_2)$; it is ordered first descending by value of $f_1$ and then ascending by value of $f_2$. The implied idea is that better assignments have more check transitions assigned, even with larger RMS values. 
+	
+	\item 
+	As you can notice, the check transitions are \emph{not} being fit in the classical algorithm, so that it is reasonable to fit the full assignment $a_{cur} + a_s + a_c$ for promising $a_c$, as an additional step.  
 \end{enumerate}
 
-As you can notice, the check transitions are \emph{not} being fit at all in the classical algorithm. This saves computation time at the cost of getting \lq\lq{}incorrect\rq\rq{} obs minus calc values for the full candidate assignment in the sense of not being obtained from a best fit, which one could expect.
 
-%There are still some degrees of freedom left in this algorithm: how do we select these meta parameters for AUTOFIT: $S$, $C$, $\Delta s$, $\Delta c$? Here are some considerations.
+Some degrees of freedom of this algorithm include the way to select meta parameters: $F$, $C$, $\Delta s$, $\Delta c$. Here are some considerations.
 
 \subsubsection{Meta parameters}
 
 \paragraph{Search windows size.}
 
-If there is an error estimate $\widehat {\Delta \beta} = (\widehat {\Delta p_1}, ..., \widehat {\Delta p_n})$ in the model parameters which are currently fit, one may calculate an according deviation estimate $\widehat {\Delta s}_i$ in the frequency position of fit transitions  $s_i \in S$ and take $\Delta s = \max \widehat {\Delta s}_i$. % This approach is called a \emph{mutation test} in this work. 
-A maximum over all search transitions is taken because only a single search window size is to be selected in PGOPHER. Actually, it is more time efficient to define individual search window sizes $\Delta s_i$ for each search transition.
+If there is an error estimate $\widehat {\Delta \beta} = (\widehat {\Delta p_1}, ..., \widehat {\Delta p_n})$ in the model parameters which are currently fit, one may calculate an according deviation estimate $\widehat {\Delta x}_i$ in the frequency position of fit transitions, and either take $\Delta s = \max \widehat {\Delta x}_i$, or use individual search windows for each fit transition.
+
+Similarly to that, the AUTOFIT version in PGOPHER provides an option to restrict parameters $p_1, ..., p_n$ of $M$ inside an n-dimensional cube. If for any ${a_s}$ parameters of $M({a_s})$ evade from this cube, this search assignment is discarded. It can speed up things drastically because of pruning at early fitting iterations.    
+
+% This approach is called a \emph{mutation test} in this work. 
+%A maximum over all search transitions is taken because only a single search window size is to be selected in PGOPHER. Actually, it is more time efficient to define individual search window sizes $\Delta s_i$ for each search transition.
 
 % The $\widehat {\Delta \beta}$ could be obtained from a previous least squares fit, but it could only be interpreted as a statistical error if the assignment didn't change since then, which doesn't hold -- AUTOFIT adds candidate assignments to the previous one.
 
-In practice, $\widehat {\Delta \beta}$ can be experience values for ab initio calculated values, as classical AUTOFIT is normally used as a fist step at the early stage of the assignment. After the first lines have been assigned, $\widehat {\Delta \beta}$ should be drastically reduces, but I cannot think of a simple analytical way to do this.
+Also in practice, when AUTOFIT is used in the early stage of the assignment, $\widehat {\Delta \beta}$ can be experience values for ab initio calculated values.
 
-If the fit transitions sit in the search window and they are observable, $S$ will be assigned correctly with certainty. But there can be practical situations when some $s \in S$ are not observable in given experimental data even if expected to be.
+It is very important for AUTOFIT that the correct frequency positions of the fit transitions reside within the search window and the corresponding spectral lines are observable in the experiment.
 
 \paragraph{Fit transitions set.}
 
-With same $\Delta B$, we will usually get smaller $\Delta s$ for fit transitions with lower frequencies (lower quantum numbers). The best in this sense are transitions between low-lying energy levels, which are well populated in supersonic jet experiments, but not at room temperature. AUTOFIT was originally designed for low temperature experiments, and if we want to analyze data from room temperature experiments, we get a trade-off between $\Delta s$ and peak intensities (signal-to-noise ratio). Experience shows that with modern spectrometers at room temperature, the region around 100 GHz is a good starting point. 
+Consider a linear molecule with predicted spectral line frequencies according to \ref{linear_eigenvalues}. For a fixed $\Delta B$, we will usually get smaller $\Delta s$ for fit transitions with lower frequencies (lower quantum numbers). The best in this sense are transitions between low-lying energy levels, which are well populated in supersonic jet experiments, but not at room temperature. AUTOFIT was originally designed for low temperature experiments, and if we want to analyze data from room temperature experiments, we get a trade-off between $\Delta s$ and peak intensities. Experience shows that with modern spectrometers at room temperature, the region around 100 GHz is a good starting point for many molecules.
 
-The entire set $S$ of fit transition must contain information on the entire set of currently fitted parameters for the optimization problem to be well defined.
+The fit transition must be described with (contain information on) the selected fit parameters for the optimization problem to be well defined.
 
 \paragraph{Check transitions set.}
 
-This may be the easiest meta  parameter to choose. There must be enough check transitions to reject wrong assignments, any additional assigned check transition reduces the probability of incorrect assignment; search time has only a linear dependent on their amount, so more is just better than less. The whole group of lines that is to be assigned, expect for $S$, can be made $C$.
+This may be the easiest meta  parameter to choose. There must be enough check transitions to reject wrong assignments, any additional assigned check transition reduces the probability of incorrect assignment; search time has only a linear dependent on their amount, so more is just better than less. The whole group (e.g. a particular series) of lines that is to be assigned, expect for $F$, can be made $C$.
 
 \paragraph{Check window size.}
 
-The AUTOFIT manual suggest to choose it equal to the experimental peak width. But a careful look reveals that a $\Delta c$ value equal to the experimental peak width is only the minimum value for $\Delta c$. This approach only covers obs minus calc  with zero mean, $\mean (x_e - x_p) = 0$, where $x_e$ considered stochastic variables. Taking the real transition frequency $x_0$ again, $\mean (x_e - x_0) = 0$ usually holds (and also $x_e$ have a normal distribution). But that doesn't cover \lq\lq{}systematic\rq\rq{} deviations with nonzero mean, which may be introduced to $x_p$ by a non-adequate model.
+The AUTOFIT manual suggest to choose it equal to the experimental peak width. But a careful look reveals that a $\Delta c$ value equal to the experimental peak width is only the minimum value for $\Delta c$. This approach only covers obs minus calc  with zero mean, $\mean (x_e - x_s) = 0$, where $x_e$ considered stochastic variables. Taking the real transition frequency $x_0$ again, $\mean (x_e - x_0) = 0$ usually holds (and also $x_e$ have a normal distribution). But that doesn't cover systematic deviations with nonzero mean, which may be introduced to $x_s$ by a non-adequate model.
 
 Commonly  model parameters are coefficients of a Hamiltonian eigenvalue expression. It contains some main terms and some terms derived from a perturbation Hamiltonian. These perturbation terms form an endless series, which has to be truncated adequately at some point. In particular, PGOPHER works with rotor Hamiltonians. 
 
@@ -240,17 +247,17 @@ For the least squares method, an exact formula can be obtained for a systematic 
 
 \subsubsection{Workflow in PGOPHER}
 
-PGOPHER is comprehensive software with many features. It facilitates fitting and spectrum line assignment for rotational and ro-vibrational spectra on every stage of assignment. Details of workflow in PGOPHER are described in its online manual. To sum up what we need in this work, here is how standard fitting goes in PGOPHER: 
-\begin{enumerate}
-	\item Current assignments are usually kept in the Line List window. New transitions have to first be added there, either by clicking them in the main windows or by adding certain groups from the Transitions window (the latter is more effective). 
-	\item Then they have to be assigned in some way to $E$ peaks of the Overlays: manually, with the Nearest Lines Plot or the AUTOFIT option.
-	\item The Fit button in the the Line List windows performs one cycle of least squares fitting of rotor parameters specified in the Constants window.
-	\item The Residuals window will appear, where one can assess the quality of the model-with-assignment $(M, a)$.
-\end{enumerate}
+%PGOPHER is comprehensive software with many features. It facilitates fitting and spectrum line assignment for rotational and ro-vibrational spectra on every stage of assignment. Details of workflow in PGOPHER are described in its online manual. To sum up what we need in this work, here is how standard fitting goes in PGOPHER: 
+%\begin{enumerate}
+%	\item Current assignments are usually kept in the Line List window. New transitions have to first be added there, either by clicking them in the main windows or by adding certain groups from the Transitions window (the latter is more effective). 
+%	\item Then they have to be assigned in some way to $E$ peaks of the Overlays: manually, with the Nearest Lines Plot or the AUTOFIT option.
+%	\item The Fit button in the the Line List windows performs one cycle of least squares fitting of rotor parameters specified in the Constants window.
+%	\item The Residuals window will appear, where one can assess the quality of the model-with-assignment $(M, a)$.
+%\end{enumerate}
 
 % For the late stage of assignment the Transitions window and the Line List window both have got a Nearest button, one click on which will assign selected transitions to nearest experimental peaks. The Accept input box in the Line List window serves here as a threshold or maximal frequency deviation. 
 
-Since 2017 the early stage of assignment is reinforced by AUTOFIT. You can right click on transitions from the Line List window and select options Mark for Autofit and Mark as Check. These will be the fit and the check transitions respectively. The Accept input box in the Line List window serves here as $\Delta c$ and the Window input box in a special Autofit window serves as $\Delta s$. Rotor parameters or constants can be confined inside a hypercube -- use the StdDev column in the Constants window.
+You can right click on transitions from the Line List window and select options Mark for Autofit and Mark as Check. These will be the fit and the check transitions respectively. The Accept input box in the Line List window serves here as $\Delta c$ and the Window input box in a special Autofit window serves as $\Delta s$. Rotor parameters or constants can be confined inside a hypercube -- use the StdDev column in the Constants window.
 
 The output assignments will be listed in the Autofit window as rows in a table. Each row is a separate assignment. On click on an output row the selected assignment is applied. Values of the fitness function $f = (n_{OK}, {RMS})$ are given in the first two columns: nOK is the number of assigned check transitions $n_{OK}$, Residual is their deviations' RMS (note that check transitions are not fitted).
 
