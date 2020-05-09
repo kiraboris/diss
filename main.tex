@@ -92,17 +92,6 @@ Due to the commonly normal distribution of $x_e$ around $x_0$, residuals $x_e - 
 
 %A pair $(M, a)$ represents the current analysis status rather then $M$ alone. 
 
-\subsection{Stages of assignment}
-
-Depending on amount of assigned lines $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage\footnote{More precisely, not just the total amount of assigned transitions describes the overall stage of assignment, but also the amount of assigned lines in some distinct categories of transitions describe the stage of assignment in that category. See section 1.6.}.
-
-The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. In the early stage, model parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order. 
-
-The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_s - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model to describe more transitions.  
-
-The intermediate stage is everything in between. You may try assigning simulated lines to nearest experimental peaks, but you still have to select one from several possible options.
-
-In the next chapter, specific methods will be introduced to tackle each state of assignment and fitting in rotational molecular spectroscopy.
 
 \subsection{Quantum models of a rotor}
 
@@ -143,6 +132,21 @@ v_0 + BJ'(J'+1) - BJ''(J''+1) + (A - B){K'}^2 - (A - B){K''}^2 - \\
 
 %If the rotor is a symmetric or asymmetric molecule, the polynomial \ref{5} has terms with different combinations of  $J$, $K_a$ and $K_c$ dependence. 
 
+
+\subsection{Residuals}
+
+Residuals $x_e - x_s$ are important in spectroscopy because of their usage in fitness functions like the one in equation \ref{def_rms}. To understand the statistical properties of the residuals, the properties of $x_e$ and $x_s$ can be separately taken into account. 
+
+The experimental frequencies $x_e$ usually nave a normal distribution around $x_0$, the real transition frequency. So if the experiment is good, $\mean (x_e - x_0) = 0$. 
+
+The simulated frequencies $x_s$, however, depend on adequacy of the model $M$. In case of a quantum model, parameters are coefficients of a Hamiltonian eigenvalue expression, which is commonly endless and has to be truncated adequately at some point See expressions \ref{linear_eigenvalues} and \ref{sym_eigenvalues} as examples.
+
+There are two possible deviation sources in connection with this, arising from both insufficient and over-sufficient amount of experimental data in the fit for the given parameter set:
+\begin{enumerate}
+	\item Expression \ref{linear_eigenvalues} may be truncated at a too early term, so that the model doesn't describe experimental data at high values of $J$ adequately;
+	\item Expression \ref{linear_eigenvalues} has enough terms to describe the data; however, there is not sufficient data for the higher order terms to be well defined. 
+\end{enumerate}
+
 \subsection{Structure of rotational spectra}
 
 For assignment of rotational spectra to models where transitions are labeled with quantum numbers according to \ref{quantum_numbers}, lines are commonly divided into  different categories according to some filtering of the quantum number values in the upper state ($Q'$), lower state ($Q''$) and the change of quantum numbers between the two states ($\Delta Q$):
@@ -158,13 +162,25 @@ It is reasonable to respect the structure of the spectrum during assignment. For
 
 The overall direction of assignment is from lower frequencies to higher frequencies, which correspond with going from lower $J$ values to higher $J$ values. 
 
+\subsection{Stages of assignment}
+
+Depending on amount of assigned lines $|a|$, to be distinguished are \emph{stages} of spectral line assignment: early stage, intermediate stage and late stage\footnote{More precisely, not just the total amount of assigned transitions describes the overall stage of assignment, but also the amount of assigned lines in distinct branches of transitions describe the stage of assignment in that branch. See section 1.6.}.
+
+The early stage of assignment usually means assigning at least first $n_0$ lines -- as much as the initial number of model parameters -- and ideally several times that amount. In the early stage, model parameters may yield $P$ very different from $E$ and spectral lines may even not be in the correct order. 
+
+The late stage of assignment is the easiest one. Experimental and simulated lines already match so well that simply assigning to the nearest in sense of $|x_s - x_e|$ gives a correct result and continuously improves $M$ with $|a|$ going up. Large frequency regions can be assigned at once. The only thing to worry about is the possible need to add more parameters to the model to describe more transitions.  
+
+The intermediate stage is everything in between. You may try assigning simulated lines to nearest experimental peaks, but you still have to select one from several possible options.
+
+The smaller elements of strategic assignment within a stage are called \emph{steps} in this work. In the next chapter, specific methods will be introduced to tackle each stage and step of assignment and fitting in rotational molecular spectroscopy.
+
 \section{Methods}
 
 %This chapter describes methods used for strategic spectral line assignment. 
 
 \subsection{AUTOFIT}
 
-AUTOFIT is a technology of automated spectral line assignment and a software with the same name originally developed by the Pate group. 
+AUTOFIT is a technology of automated spectral line assignment and a software with the same name originally developed by the Pate group. It is mostly helpful in the early stage of assignment because of large uncertainty in $x_s$ positions at that point, but in modern implementations it can be used as a distinct step at any stage.
 
 The original AUTOFIT is written in Python as a wrapper for Pickett SPFIT and SPCAT programs. It is primarily designed for the early stage of assignment and restricts to models of rigid asymmetric molecules with 3 rotational constants (A, B, C).  No additional constants are added during the process (except for so-called refinement in the very end, which is not automatic). These can be considered as drawbacks that were lifted in the AUTOFIT feature of PGOPHER. 
 
@@ -225,18 +241,10 @@ This may be the easiest meta  parameter to choose. There must be enough check tr
 
 \paragraph{Check window size.}
 
-The AUTOFIT manual suggest to choose it equal to the experimental peak width. But a careful look reveals that a $\Delta c$ value equal to the experimental peak width is only the minimum value for $\Delta c$. This approach only covers obs minus calc  with zero mean, $\mean (x_e - x_s) = 0$, where $x_e$ considered stochastic variables. Taking the real transition frequency $x_0$ again, $\mean (x_e - x_0) = 0$ usually holds (and also $x_e$ have a normal distribution). But that doesn't cover systematic deviations with nonzero mean, which may be introduced to $x_s$ by a non-adequate model.
-
-Commonly  model parameters are coefficients of a Hamiltonian eigenvalue expression. It contains some main terms and some terms derived from a perturbation Hamiltonian. These perturbation terms form an endless series, which has to be truncated adequately at some point. In particular, PGOPHER works with rotor Hamiltonians. 
-
-There are two possible deviation sources in connection with this, arising from both insufficient and over-sufficient amount of experimental data in the fit for the given parameter set. This can be seen on the example of a linear molecule (see expression \ref{linear_eigenvalues}):
-\begin{enumerate}
-	\item Expression \ref{linear_eigenvalues} may be truncated at a too early term, so that the model doesn't describe experimental data at high values of $J$ adequately;
-	\item Expression \ref{linear_eigenvalues} has enough terms to describe the data; however, there is not sufficient data for the higher order terms to be well defined. 
-\end{enumerate}
+The AUTOFIT manual suggest to choose it equal to the experimental peak width. But a careful look reveals that a $\Delta c$ value equal to the experimental peak width is only the minimum value for $\Delta c$. This approach only covers obs minus calc  with zero mean, $\mean (x_e - x_s) = 0$, where $x_e$ considered stochastic variables. Taking the real transition frequency $x_0$ again, $\mean (x_e - x_0) = 0$ usually holds (and also $x_e$ have a normal distribution). But that doesn't cover systematic deviations with nonzero mean, which may be introduced to $x_s$ by a non-adequate model (see section 1.7).
 
 %What systematic error arises from truncating this expression up to $D$ with large-$J$ experimental data in the fit? 
-For the least squares method, an exact formula can be obtained for a systematic error $\delta$ between the current and the next order precise models. This formula will depend on the (candidate) assignment $a$. The classical AUTOFIT defines $\Delta c$ before test-assigning the fit transitions, but one could modify the sequence and (automatically) select $\Delta c$ for each candidate assignment of fit transitions.  
+For the least squares method, an exact formula can be obtained for a systematic error $\delta$ between the current and the next order precise models. This formula will depend on the candidate assignment $a_c$. The classical AUTOFIT defines $\Delta c$ before test-assigning check transitions, but one could modify the sequence and (automatically) select $\Delta c$ for each assignment of fit transitions $a_s$.  
 
 % The same is the case for insufficient data and poorly defined $D$: a formula can be obtained in the least squares method case for the deviations, but they will depend on the $D$'s uncertainty, which in turn depends on the assignment $a$. There deviations usually cannot be neglected in classical AUTOFIT because, as mentioned However, in classic AUTOFIT only a model $(M, a_s)$ is being fit. Best fit residuals for the model $(M, a)$ appear only after an additional fitting cycle. Thus the RMS values in AUTOFIT output are generally too high values.
 
@@ -268,7 +276,7 @@ The output assignments will be listed in the Autofit window as rows in a table. 
 There are some graphical tools available, which reinforce the search for series and branches of lines. The two basic ideas behind visual tools are:
 \begin{enumerate}
     \item Humans are trained to recognize patterns with bare eye,
-    \item Lines in a series or branch often have systematic obs - calc residuals which arise from the imperfectness of the model $M$ (see above)\todo{Move that explanation to Introduction}. 
+    \item Lines in a series or branch often have systematic obs - calc residuals which arise from the imperfectness of the model $M$ (see section 1.7). 
 \end{enumerate}
 
 The commonly used visual tools for selecting and assigning a whole series or branch of lines at once are:
@@ -310,16 +318,22 @@ For a typical spectroscopic model it means that as soon as the rotational consta
 \section{Examples}
 \subsection{OCS}
 
-OCS is a linear molecule with a dipole moment of $0.715(1)$ D. Its rotational transition frequencies are well known; this molecule is often used for calibrating and testing new spectrometers or spectra analysis methods. Every nucleus of OCS has two or more stable isotopes, giving room for many isotopologues of OCS. Data for most single substituted and some double substituted isotopologues is available in CDMS.
+OCS is a linear molecule with a dipole moment of $0.715(1)$ D. Every nucleus of OCS has two or more stable isotopes, giving room for many isotopologues of OCS. Rotational transition frequencies are well known; data for most single substituted and some double substituted isotopologues is available in CDMS.
 
-In each test here we took a set of lines $E$ from CDMS line lists (with known line positions and infinitely narrow peaks). This makes the tests independent from some peak finder we would use if we took a real experimental spectrum. We generated artificial mixtures of different OCS isotopologues and two vibrational states for the main isotopologue at room temperature (300 K).
+OCS is often used for calibrating and testing spectrometers or spectra analysis methods. Here we will test the strategic assignment. 
+
+In each test we took a set of lines $E$ from CDMS line lists (with known line positions and infinitely narrow peaks). This makes the tests independent from some peak finder we would use if we took a real experimental spectrum. We generated artificial mixtures of different OCS isotopologues and two vibrational states for the main isotopologue at room temperature (300 K).
 
 The initial settings: one rotor model with one parameter $B = 6000$ MHz, which is close to actual values for all OCS species; lower 25 simulated transitions are put into the Line List window. They spread on the region 12-300 GHz, which we commonly observe with broadband spectrometers. All lines are preliminary marked as check transitions. 
 
 We selected the first fit transition at $J'' = 10$ at 132 GHz. Guessing a 2\% error in $B$ ($\pm 120$ MHz), we get a $\Delta s = 2*120(11*12 - 11*10) = 5280$ MHz as a first guess. We select $\Delta c = 1$ MHz as a first guess, a typical order of magnitude for 2 line widths.
 
-In the first test, we took just the main species $\rm ^{16}O^{12}C^{32}S$ with $B \approx 6081$ MHz. With the above meta parameters, we get a correct $B$, but only 1 check transition assigned. This clearly demonstrates why $\Delta c$ in the order of line width is not sufficient. If $\Delta c$ is increased and auto fit is repeated, more and more check transitions are assigned, until at $\Delta c = 70$ MHz all 24 check transitions are assigned. The Residual window (after an additional fit cycle) clearly shows a systematic deviation trend that usually means that distortions are needed. Indeed, if we select a second fit transition say at $J'' = 9$ and fit both $B$ and $D$, a $\Delta c = 1$ MHz is already enough to assign all check transitions properly.
+\subsubsection{Early stage of assignment (AUTOFIT)}
 
+\paragraph{First test.} 
+In the first test. we took just the main species $\rm ^{16}O^{12}C^{32}S$ with $B \approx 6081$ MHz. With the above meta parameters, we get a correct $B$, but only 1 check transition assigned. This clearly demonstrates why $\Delta c$ in the order of line width is not sufficient. If $\Delta c$ is increased and auto fit is repeated, more and more check transitions are assigned, until at $\Delta c = 70$ MHz all 24 check transitions are assigned. The Residual window (after an additional fit cycle) clearly shows a systematic deviation trend that usually means that distortions are needed. Indeed, if we select a second fit transition say at $J'' = 9$ and fit both $B$ and $D$, a $\Delta c = 1$ MHz is already enough to assign all check transitions properly.
+
+\paragraph{Second test.}
 In the second test, we took a following \lq\lq{}enriched\rq\rq{} mixture: $\rm ^{16}O^{12}C^{32}S$ $v = 0$ and $v_2 = 1$ at 100\% CDMS line strength, 
 $\rm ^{16}O^{13}C^{32}S$, $\rm ^{16}O^{12}C^{33}S$, $\rm ^{16}O^{12}C^{34}S$ and $\rm ^{18}O^{12}C^{32}S$ at 50\% line strength as well as $\rm ^{16}O^{13}C^{34}S$, $\rm ^{16}O^{13}C^{33}S$, $\rm ^{18}O^{13}C^{32}S$ and $\rm ^{17}O^{12}C^{32}S$ at 10\% line strength. 
 
@@ -339,6 +353,7 @@ We expected that increasing the number of check transitions ($|C|$) and,  simult
 
 We also tried increasing $|C|$ and, simultaneously, adding $H$ to the fit (without changing $\Delta c$). But $H$ is poorly defined from least squares even for $|C| = 40$, and AUTOFIT gives \lq\lq{}rubbish out\rq\rq{}: check transitions are assigned poorly and he Residuals window shows seemingly even larger errors than with only $B$ and $D$ being fitted.
 
+\paragraph{Other tests.}
 In the third test, we generated spectrum of $\rm ^{16}O^{12}C^{32}S$ $v = 0$ with added random normal errors with $\sigma = 0.1$ MHz to CDMS line positions. %Intuition may suggest that with a $\Delta c = 1$ MHz check transitions would be assigned with $4 \sigma$ confidence or $21--22$ from $23$ check lines. That would be the case if the assignment of search transitions yielded a perfect $M$, so that each check transition would be in the exact theoretical position ($x_0$). 
 Since only the 2 fit transitions are fitted in an auto fit, the model gets drastically worse with errors introduced into search transitions. In our case, the higher frequency check transitions get large systematic deviations, but, again, increasing $\Delta c$ allowed to assign all check transitions correctly. The strategy of increasing $\Delta c$ worked also in the next test, where $1000$ random \lq\lq{}weeds\rq\rq{} were added to the spectrum (Fig. \ref{fig:weeds}).
 
@@ -354,7 +369,12 @@ As in previous tests, increasing both $\Delta c$ and $|C|$ ultimately yields $n_
 
 But there is also at least one more strategy that can be used: adding another fit transition \emph{without} adding an additional fit parameter. This reduces obs minus calc after the auto fit compared to an auto fit with fewer fit transitions and enlarges the $n_{OK}$ \lq\lq{}gap\rq\rq{}. The main disadvantage -- computation time goes up drastically. %The final output for $3$ fit transitions and $37$ check transitions with a $\Delta c = 35$ MHz is shown in Fig. \ref{fig:ocs_final}.
 
-With all transitions up to 300 GHz assigned, we consider the early stage of assignment complete for this case. Transitions with higher frequencies can be assigned by using the Nearest method -- one only has to worry about floating additional distortions at some point. 
+
+With all transitions up to 300 GHz assigned, we consider the early stage of assignment complete for this case.
+
+\subsubsection{Intermediate and late stages of assignment}
+
+Since OCS, being a linear molecule, contains only a single series of quantum transitions for its whole spectrum, the intermediate stage can be done in one step using the Nearest Lines Plot. One only has to worry about floating additional distortions at some point. These additional distortions also can be found with the global fitter, as an option.
 
 \subsection{Vinyl cyanide}
 
