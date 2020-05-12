@@ -172,7 +172,7 @@ The late stage of assignment is the easiest one. Experimental and simulated line
 
 The intermediate stage is everything in between. You may try assigning simulated lines to nearest experimental peaks, but you still have to select one from several possible options.
 
-The smaller elements of strategic assignment within a stage are called \emph{steps} in this work. In the next chapter, specific methods will be introduced to tackle each stage and step of assignment and fitting in rotational molecular spectroscopy.
+The smaller elements of  assignment within a stage are called \emph{steps} in this work. In the next chapter, specific methods will be introduced to tackle each stage and step of assignment and fitting in rotational molecular spectroscopy.
 
 \section{Methods}
 
@@ -521,11 +521,25 @@ The difference is that here the work is a more careful. What one immediately see
 
 %[Also observation 4, hypothesis 5 and 6. and 7]
 
-
+\FloatBarrier
 \section{Conclusion}
 
 \subsection{Strategic assignment and fitting}
 
-This is not a distinct new method, but rather a summary and combination of the above methods. 
+The examples shown in this work suggest the existence of a certain \emph{strategy} of assigning spectra and fitting models of relatively simple molecules in rotational spectroscopy. This strategy is a combination of the different methods described. Consider a flowchart:
+
+\begin{figure}[h]
+\center{\includegraphics[width=1\linewidth]{./pic/strategy}}
+\caption{\small Flowchart of strategic assignment and fitting on vinyl cyanide example. 
+}
+\label{fig:strategy_1}
+\end{figure}
+
+As shown in Fig. \ref{fig:strategy_1}, we do strategic assignment and fitting the following way:
+\begin{enumerate}
+    \item  Begin with strongest features (here aR branch) and fit the parameters which can be determined from them (here class BC and class DJ/K).
+    \item As soon as we have some information on class BC and class DJ/K parameters, we include other first-order parameters (e.g. class A and class DK). They are not well defined yet, but good enough to find the one branch which will give more information on them (here bQ). The correctly assigned beginning of the bQ branch will enable much better estimates of class A and class DK parameters.
+    \item Include more lines and distortions, and finalize the fit.
+\end{enumerate} 
 
 \end{document}
