@@ -328,7 +328,7 @@ The initial settings: one rotor model with one parameter $B = 6000$ MHz, which i
 
 We selected the first fit transition at $J'' = 10$ at 132 GHz. Guessing a 2\% error in $B$ ($\pm 120$ MHz), we get a $\Delta s = 2*120(11*12 - 11*10) = 5280$ MHz as a first guess. We select $\Delta c = 1$ MHz as a first guess, a typical order of magnitude for 2 line widths.
 
-\subsubsection{Early stage of assignment (AUTOFIT)}
+\subsubsection{Early stage of assignment}
 
 \paragraph{First test.} 
 In the first test. we took just the main species $\rm ^{16}O^{12}C^{32}S$ with $B \approx 6081$ MHz. With the above meta parameters, we get a correct $B$, but only 1 check transition assigned. This clearly demonstrates why $\Delta c$ in the order of line width is not sufficient. If $\Delta c$ is increased and auto fit is repeated, more and more check transitions are assigned, until at $\Delta c = 70$ MHz all 24 check transitions are assigned. The Residual window (after an additional fit cycle) clearly shows a systematic deviation trend that usually means that distortions are needed. Indeed, if we select a second fit transition say at $J'' = 9$ and fit both $B$ and $D$, a $\Delta c = 1$ MHz is already enough to assign all check transitions properly.
@@ -381,7 +381,7 @@ Since OCS, being a linear molecule, contains only a single series of quantum tra
 Vinyl cyanide ($\rm C_2H_3CN$), also known as acrylonitrile or propenenitrile, is an important molecule in space: it has been detected in the Sagittarius B2 star forming region, in dark clouds, circumstellar envelopes, in Titan atmosphere. The molecule is a highly prolate asymmetric top with $\kappa = -0.9798$ for the main isotopic species in its ground vibrational state and two nonzero electric dipole moments $\mu_a = 3.816(3)$ D and $\mu_b = 0.687(8)$ D.  
 
 
-For the same reason as in the OCS example, we took here artificial spectra of $\rm C_2H_3CN$ lines from CDMS. In the first few tests, just the main species was taken as $E$ with some added noise. An asymmetric top model was created in PGOPHER with only rigid rotational constants $A, B, C$. The initial constant values were derived from true values of a complete parameter list by forcefully setting all distortions and perturbations to zero and then fitting the correct assignment to only $A, B, C$. This gives, in some sense, effective values of $A, B, C$, which mimic ab initio calculation results. %selecting random shifts within $1\%$ of the true value, resembling an ab initio calculations result, where also $1\%$ error is often a fair guess. 
+For the same reason as in the OCS example, we took here artificial spectra of $\rm C_2H_3CN$ lines from CDMS. In the first few tests, just the main species was taken as $E$ with some added noise. An asymmetric top model was created in PGOPHER with only rotational constants $A, B, C$. The initial constant values were derived from true values of a complete parameter list by forcefully setting all distortions and perturbations to zero and then fitting the correct assignment to only $A, B, C$. This gives, in some sense, effective values of $A, B, C$, which mimic ab initio calculation results. %selecting random shifts within $1\%$ of the true value, resembling an ab initio calculations result, where also $1\%$ error is often a fair guess. 
 
 \subsubsection{Early stage of assignment}
 
@@ -391,11 +391,11 @@ For a single species of $\rm C_2H_3CN$,
 distinct $K$-ladders of $\mu_a$-type lines at different $J$ are the strong features. %The $\mu_a$-type spectra can be actually assigned straightforward, though some different assignments in the middle of a $K-$ladder may need to be tested at early stage.
 It is important to fit at least $B$, $C$ and $D_{JK}$ in the initial auto fit, as these constants are the main factors for one $K$-ladder. 
 
-In the test with low noise  we started with $J' = 8$, from which arbitrary $3$ lines were marked as fit transitions and the others were marked as check transitions. 
+In preliminary tests with no noise, we started with $J' = 8$, from which arbitrary $3$ lines were marked as fit transitions and the others were marked as check transitions. 
 
-If the amount of noise is large, e.g. more than $50\%$ of  experimental peaks don't belong to the species of interest, it is good to additionally fit $D_J$ and one additional $K$-ladder. Here we started with $J' = 8, 9$, from which $4$ lines were marked as fit transitions and the others were marked as check transitions.
+If the amount of noise is large, e.g. more than $50\%$ of  experimental peaks don't belong to the species of interest, it is good to additionally fit $D_J$ and one additional $K$-ladder. So in the actual tests, with added noise, we started with $J' = 8, 9$, from which $4$ lines were marked as fit transitions and the others were marked as check transitions.
 
-In both cases we selected $\Delta s = 300$ MHz and $\Delta c = 2$ MHz, which yield a  well distinguishable good assignment in the first output row. This assignment is almost correct: it gives parameter values, which are sufficiently good for the next stage of assignment, and contains a few assignment errors, which will be also revealed and fixed in the next stage of assignment. 
+In both cases we selected $\Delta s = 300$ MHz and $\Delta c = 2$ MHz, which yield a well distinguishable good assignment in the first output row. This assignment is almost correct: it gives parameter values, which are sufficiently good for the next stage of assignment, and contains a few assignment errors, which will be also revealed and fixed in the next stage of assignment. 
 
 %We were going to try the brute force approach again and put $\mu_a$-type transitions with $6 \leq J' \leq 14$, with $10\%$ strength cutoff and 140 GHz frequency cutoff (total of 165 transitions), preliminary marked as check transitions, into the Line List.  
 
@@ -409,28 +409,56 @@ In both cases we selected $\Delta s = 300$ MHz and $\Delta c = 2$ MHz, which yie
 
 The Nearest Lines Plot in PGOPHER was used for visualizing systematic trends in series of spectral lines. The Nearest Lines instrument shows a mess when selecting all $K_a$ together, but the trends are visible when selecting individual $K_a$ in the Filter. 
 
-Also, applying a restriction for the intensity ratio of the calculated and experimental lines helps, if it is consistent enough. Intensity ratios play a big role when choosing between otherwise unclear nearest lines. In most experiments though\footnote{There are experiments which are calibrated to absolute intensities.}, intensities of two peaks can be compared only locally, in a certain frequency window. 
+Also, applying a restriction for the intensity ratio of the calculated and experimental lines helps, if it is consistent enough throughout the frequency range of the experiment. Intensity ratios play a big role when choosing between otherwise unclear nearest lines. In most experiments though\footnote{There are experiments which are calibrated to absolute intensities.}, intensities of two peaks can be compared only locally, within a certain frequency window. 
 
-Fig. \ref{fig:vin_analytics_5} and \ref{fig:vin_analytics_6} show the change of some metrics during the intermediate stage of assignment of the main species on vinyl cyanide. The X axis represents steps of assignment. The various selected metrics are plotted along the Y axis in the three vertical parts of the plots, from top to bottom: 
-\begin{enumerate}
-    \item The relative deviation of the current model parameter values to the true model parameter values. The true model is taken from CDMS; 
-    \item The amount of fitted lines in each branch and in total;
-    \item The value of $f_{RMS}$ for the lines currently in the fit (bold line) and for the lines in the last step of the intermediate stage of assignment (thin line).
-\end{enumerate}
+Fig. \ref{fig:vin_analytics_5} and \ref{fig:vin_analytics_6} show the change of some metrics during the intermediate stage of assignment of the main species on vinyl cyanide. The X axis represents steps of assignment. The various selected metrics are plotted along the Y axis in the three vertical parts of the plots, from top to bottom: deviation of model parameters, amount of lines in the assignment and the RMS of the assignment. All Y axes are logarithmic.
+
+\paragraph{Deviation of model parameters.}
+    The top sub-plot is the relative deviation of the current model parameter values to the true model parameter values. The true model is taken from the CDMS. To make the plot less cluttered, model parameters are combined into classes of alike parameters in respect to known properties of a highly prolate molecule:
+    \begin{itemize}
+        \item class A contains $A$;
+        \item class BC contains $B$ and $C$;
+        \item class DJ/K contains $D_J$, $D_{JK}$ and $d_J$;
+        \item class DK contains $D_K$ and $d_K$;
+        \item class H contains all sextic distortions.
+    \end{itemize}
+    The formula for the relative deviation $\delta$ of a class of paramters is
+    \begin{equation}
+        \delta = \sum_{i \in Class} (p_i - p^{(true)}_i) / p^{(true)}_i.
+    \end{equation}
+    
+\paragraph{Amount of lines and OMC RMS.} These are properties of the assignement $a$, see expression \ref{def_assignment}.
+
+    The middle sub-plot is the amount of assigned lines is $|a|$ for the lines in total, and the amount of assigned lines per branch, denoted e.g. aR for a-type R-branch or bQ for b-type Q-branch in the plot.
+    
+    The lower sub-plot is the OMC RMS (obs minus calc root mean square residual value), i.e. the value of $f_{RMS}$, see expression \ref{def_rms}. The bold line represents $f_{RMS}(a)$ for the lines currently assigned, and the thin line represents $f_{RMS}(a_{last})$ for the lines in the last step of the intermediate stage of assignment. The dotted line represents RMS of $10$ kHz, which is a typical threshold for a good looking model and assignment.
 
 
-\begin{sidewaysfigure}
-\center{\includegraphics[width=1.2\linewidth]{./pic/5}}
-\caption{\small The flow is: at first the R-branch was extended to include more $J$s. Some additional distortions were taken into the fit. Then, the Q-branch was found. }
+\begin{figure}[h]
+\center{\includegraphics[width=1\linewidth]{./pic/5a}}
+\caption[Flow of fitting $\rm C_2H_3CN$ (try \#1).]{\small Flow of fitting $\rm C_2H_3CN$ (try \#1). 
+
+Here the flow begins with the AUTOFIT step $0$, which serves as early stage of assignment for the aR branch. We started with $J' = 8, 9$ lines, from which arbitrary $4$ lines were marked as fit transitions and the others were marked as check transitions, with $\Delta s = 300$ MHz and $\Delta c = 2$ MHz. AUTOFIT yields a distinct almost correct assignment in the first row (minor assigment errors are corrected in steps $2$--$6$).
+
+In steps $1$--$4$, more aR lines with $10 \leq J' \leq 23$ are added to the assignment (up to $210$ GHz). This first leads to growth of the RMS value, until class DK parameters are added to the fit. Lines are added series-wise, increasing $K_a$ gradually with the Nearst Lines Plot.  
+
+In step 7, first bQ lines are added to the fit. There is ambiguity in the nearest candidates for them, so AUTOFIT is used, which serves as early stage of assignment for the bQ branch. Strong lines of the whole branch are used as check transitions, and $3$ arbitrary lines among them are used as fit transitions with $\Delta s = 400$ MHz and $\Delta c = 1$ MHz. Due to the large amount of check transitions and an already pretty good model, AUTOFIT yields a distinct correct assignment in the first row.
+
+In later steps lines are bulk-added, all strongest lines of a branch at once, using the Nearest Lines Plot. First Q lines are added, then R lines, now already without respect for a or b type. Notice the final step, when the quality of the fit increased drastically after adding bR lines and thus having all branches in the assignment.}
 \label{fig:vin_analytics_5}
-\end{sidewaysfigure}
+\end{figure}
 
 
-\begin{sidewaysfigure}
-\center{\includegraphics[width=1.2\linewidth]{./pic/6}}
-\caption{\small The flow is: at first the R-branch was extended to include more $J$s. Some additional distortions were taken into the fit. Then, the Q-branch was found. }
+\begin{figure}[h]
+\center{\includegraphics[width=1\linewidth]{./pic/6a}}
+\caption[Flow of fitting $\rm C_2H_3CN$ (try \#2).]{\small Flow of fitting $\rm C_2H_3CN$ (try \#2). 
+
+This flow follows the same principles as in Fig. \ref{fig:vin_analytics_5}, i.e. step by step adding different branches and series of lines. Again, at first the aR lines are added, then the bQ lines, then the bR lines (the step with adding aQ lines was skipped, as it is possible to leave them for the late stage of assignment.)
+
+The difference is that here the work is a more careful. What one immediately sees is that here AUTOFIT is used only once (in the very beginning). The first Q branch lines are found in step 3 with means of just the Nearest Lines Plot. Also, generally the curves are more monotonous here. It can be traced back, at least partially, to the early detection of minor errors in assignment with help of the Nearest Lines Plot. 
+}
 \label{fig:vin_analytics_6}
-\end{sidewaysfigure}
+\end{figure}
 
 
 
