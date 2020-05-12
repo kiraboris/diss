@@ -21,11 +21,11 @@
 
 \subsection{Molecular models}
 
-Laboratory experiments are usually conducted under known physical conditions $C$, such as temperature, pressure or electromagnetic fields, aiming to understand a certain phenomenon. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of molecules or molecular ions (below the word \lq\lq{}molecule\rq\rq{} is used for both cases), which can be used to predict spectra of those molecules under various conditions of observations and depending on conditions of observation. For instance, observational data under unknown conditions $C'$ can be compared with theoretical predictions and $C'$ can be deduced from them. Again, a model is the knowledge we obtain from experiments or observations. 
+Laboratory experiments are usually conducted under known physical conditions $\mathfrak{C}$, such as temperature, pressure or electromagnetic fields, aiming to understand a certain phenomenon. This understanding is described in a \emph{model} of the phenomenon. In particular, laboratory molecular spectroscopy involves building a model of molecules or molecular ions (below the word \lq\lq{}molecule\rq\rq{} is used for both cases), which can be used to predict spectra of those molecules under various conditions of observations and depending on conditions of observation. For instance, observational data under unknown conditions can be compared with theoretical predictions and $\mathfrak{C}$ can be deduced from them. Again, a model is the knowledge we obtain from experiments or observations. 
 
-The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $C$. The disadvantages of this approach include heavy time and storage costs as well as limitations in achieving some $C$. Therefore usually experimental data are summarized in relatively simple models with only a relatively small number $n$ of parameters $p_1, ..., p_n$. There is an obvious trade-off between model prediction quality and model complexity in terms of $n$.
+The simplest way to obtain this knowledge would be to memorize experimental results for every possible set of conditions $\mathfrak{C}$. The disadvantages of this approach include heavy time and storage costs as well as limitations in achieving some $\mathfrak{C}$. Therefore usually experimental data are summarized in relatively simple models with only a relatively small number $n$ of parameters $p_1, ..., p_n$. There is an obvious trade-off between model prediction quality and model complexity in terms of $n$.
 
-A model of a molecule in molecular spectroscopy is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated mapping $(C, M) \rightarrow S$, where $C$ are possible conditions of observation and $S$ are corresponding predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that some given predicted spectrum $S$ is in some sense close to a given experimental (observed) spectrum $E$.  
+A model of a molecule in molecular spectroscopy is a set of parameters $M = \{p_1, ..., p_n\}$ and an associated mapping $(\mathfrak{C}, M) \rightarrow S$, where $\mathfrak{C}$ are possible conditions of observation and $S$ are corresponding predicted (calculated, simulated) spectra. The model $M$ is constructed by \emph{fitting} its parameters to experimental data, i.e. optimizing  $p_1, ..., p_n$ in a way that some given predicted spectrum $S$ is in some sense close to a given experimental (observed) spectrum $E$.  
 
 \subsection{Standard fitting procedure}
 
@@ -296,7 +296,7 @@ We will talk about the last one.
 
 \subsubsection{Working principle}
 
-A nearest lines plot is basically a scatter plot, where individual points represent assignment possibilities for observed lines. The plot has residuals on the Y axis and it has frequency, quantum number or an arbitrary label of a line on the X axis (see Fig. \ref{fig:nlp_ex}). The name nearest lines comes from the idea that at a given X position the plot points represent nearest observed peaks observed peaks for a predicted line peak under consideration. 
+A nearest lines plot is basically a scatter plot, where individual points represent assignment possibilities for observed lines. The plot has residuals on the Y axis and it has frequency, quantum number or an arbitrary label of a line on the X axis (see Fig. \ref{fig:nlp_ex}). The name nearest lines comes from the idea that at a given X position the plot points represent nearest observed peaks for a predicted line peak under consideration. 
 
 \begin{figure}[h]
 \center{\includegraphics[width=0.85\linewidth]{./pic/nlp_example}}
@@ -387,7 +387,7 @@ But there is also at least one more strategy that can be used: adding another fi
 
 %With all transitions up to 300 GHz assigned, we consider the early stage of assignment complete for this case.
 
-\subsubsection{Intermediate and late stages of assignment}
+\subsubsection{Intermediate stage of assignment}
 
 Since OCS, being a linear molecule, contains only a single series of quantum transitions for its whole spectrum, the intermediate stage can be done in one step using the Nearest Lines Plot. One only has to worry about floating additional distortions at some point. These additional distortions also can be found with the global fitter, as an option.
 
@@ -541,5 +541,7 @@ As shown in Fig. \ref{fig:strategy_1}, we do strategic assignment and fitting th
     \item As soon as we have some information on class BC and class DJ/K parameters, we include other first-order parameters (e.g. class A and class DK). They are not well defined yet, but good enough to find the one branch which will give more information on them (here bQ). The correctly assigned beginning of the bQ branch will enable much better estimates of class A and class DK parameters.
     \item Include more lines and distortions, and finalize the fit.
 \end{enumerate} 
+
+Each stage of assignment contains of one or more steps. With respect to the standard fitting procedure (see section 1.2), each step of assignment includes one or several iterations of the standard fitting procedure.
 
 \end{document}
