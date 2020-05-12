@@ -188,7 +188,14 @@ The PGOPHER version allows to fit all models that can be built in PGOPHER. For t
 
 \subsubsection{Working principle}
 
-With some user input, AUTOFIT constructs a set of candidate assignments. For each candidate assignment $a_c$ the software evaluates a fitness function $f(a_c)$. The output is a list of assignments sorted by $f(a_c)$, where the upper rows are, under certain conditions, more likely to be better assignments or even (almost) correct assignments than the lower rows. These are the classical steps of AUTOFIT:
+With some user input, AUTOFIT constructs a set of candidate assignments. For each candidate assignment $a_c$ the software evaluates a fitness function $f(a_c)$. The output is a list of assignments sorted by $f(a_c)$, where the upper rows are, under certain conditions, more likely to be better assignments or even (almost) correct assignments than the lower rows. These are the classical steps of AUTOFIT (also see Fig. \ref{fig:autofit_pr}):
+
+\begin{figure}[h]
+\center{\includegraphics[width=0.85\linewidth]{./pic/autofit_principle}}
+\caption{\small Working principle of AUTOFIT. Firstly, fit transitions are selected and the search window size. All possible assignments of the fit transitions will be examined, each of them takes one fitting cycle from Constants 0 to (a different set of) Constants 1. Then, selected check transitions are predicted from Constants 1 and checked for existing obs inside a check window. In the output, different assignments of fit transitions are added up with the nearest neighbour assignments of the check transitions. The red arrow in the right side demonstrates a possible problem with the nearest neighbour assignment. The two calc lines should be assigned to two adjacent obs, but are assigned to the same obs.}
+\label{fig:autofit_pr}
+\end{figure}
+
 
 \begin{enumerate}
 	\item A peak finder is run on the experimental spectrum to construct $E$. Original AUTOFIT provides a built-in simple peak finder, which find all local maxima above a certain threshold on the Y axis, independent on the peak width or anything else. 
@@ -199,7 +206,7 @@ With some user input, AUTOFIT constructs a set of candidate assignments. For eac
 		\item Each transition $(q, x_s, ...) \in F$ is assigned to an experimental line $(x_e, ...) \in E$ if $|x_s - x_e| < \Delta s$. Let all possible assignments of this kind be called the search assignments $\{a_s\}$. For example, if there are 30 experimental peaks inside $\Delta s$ around each of the $n$ fit transitions, $|\{a_s\}| = 30^{n}$. If $\{a_s\} = \emptyset$, AUTOFIT is considered to have failed. 
 		\item For each $a_s$: $a_{cur} + a_s$ is used in a trial fit to the model $M$. This gives candidate models $M(a_s)$ and candidate predicted transition sets $S(a_s)$. Note that $S(a_s) \neq S_0$. Based on labels (quantum numbers) of the predicted transitions, the initial check transitions $C \in S_0$ are mapped into altered versions $C' \in S(a_s)$. 
 
-		\item Transitions $(q, x_s, ...) \in C'$ are assigned to \emph{nearest} experimental lines $(x_e, ...) \in E$ if $|x_s - x_e| < \Delta c$. This assignment we call a candidate assignment $a_c = a_c(a_s)$. %The number of assigned check transitions $a_c(a_s)$  Zero or more check transitions are assigned, let's call this quantity $n_{OK}$.
+		\item Transitions $(q, x_s, ...) \in C'$ are assigned to \emph{nearest neighbour} experimental lines $(x_e, ...) \in E$ if $|x_s - x_e| < \Delta c$. This assignment we call a candidate assignment $a_c = a_c(a_s)$. %The number of assigned check transitions $a_c(a_s)$  Zero or more check transitions are assigned, let's call this quantity $n_{OK}$.
 		%\item  The candidate assignments set $\mathfrak{A}$ is constructed as $\{a_{cur} + a_s + a_c(a_s)\}\,\forall a_s \in \mathfrak{a_s}$.
 		
 	\item The fitness function $f$ is defined as a pair $(f_1, f_2)$, where $f_1 = |a_c| = n_{OK}$ is the amount of assigned check transitions, and $f_2 = f_{RMS}(a_c)$ is the RMS of assigned check transitions' deviations with $f_{RMS}$ defined in \ref{def_rms}. 
@@ -208,7 +215,6 @@ With some user input, AUTOFIT constructs a set of candidate assignments. For eac
 	\item 
 	As you can notice, the check transitions are \emph{not} being fit in the classical algorithm, so that it is reasonable to fit the full assignment $a_{cur} + a_s + a_c$ for promising $a_c$, as an additional step.  
 \end{enumerate}
-
 
 Some degrees of freedom of this algorithm include the way to select meta parameters: $F$, $C$, $\Delta s$, $\Delta c$. Here are some considerations.
 
@@ -275,8 +281,8 @@ The output assignments will be listed in the Autofit window as rows in a table. 
 
 There are some graphical tools available, which reinforce the search for series and branches of lines. The two basic ideas behind visual tools are:
 \begin{enumerate}
-    \item Humans are trained to recognize patterns with bare eye,
-    \item Lines in a series or branch often have systematic obs - calc residuals which arise from the imperfectness of the model $M$ (see section 1.7). 
+    \item Humans are trained to recognize patterns with bare eye;
+    \item Lines in a series or branch often have systematic obs - calc residuals which arise from the imperfectness of the model $M$ (see section 1.7). Instead of estimating them, one can just plot them. 
 \end{enumerate}
 
 The commonly used visual tools for selecting and assigning a whole series or branch of lines at once are:
@@ -290,15 +296,23 @@ We will talk about the last one.
 
 \subsubsection{Working principle}
 
-A nearest lines plot is basically a scatter plot, where individual points represent assignment possibilities for observed lines. The plot has residuals on the Y axis and frequency, quantum number or an arbitrary label of a line on the X axis. The name nearest lines comes from the idea that at a given X position the plot points represent nearest observed peaks observed peaks for a predicted line peak under consideration. 
+A nearest lines plot is basically a scatter plot, where individual points represent assignment possibilities for observed lines. The plot has residuals on the Y axis and it has frequency, quantum number or an arbitrary label of a line on the X axis (see Fig. \ref{fig:nlp_ex}). The name nearest lines comes from the idea that at a given X position the plot points represent nearest observed peaks observed peaks for a predicted line peak under consideration. 
+
+\begin{figure}[h]
+\center{\includegraphics[width=0.85\linewidth]{./pic/nlp_example}}
+\caption{\small The Nearest Lines Plot in PGOPHER. For each calculated line (X position, the order of lines can be chosen by user) the nearest observed lines are plotted along the Y (obs-calc) axis. In this example, a Q branch of Vinyl Cyanide is depicted (see section 3.2).}
+\label{fig:nlp_ex}
+\end{figure}
 
 \subsubsection{Workflow in PGOPHER}
 
-In PGOPHER the usual way to go is to select a series or branch of predicted transitions using the Transitions Window and append it to the Line List. Then, you open the Nearest Line Plot and typically use the Filter option there, which filters only the selected series or branch in a chosen frequency range. 
+In PGOPHER the usual way to go is to select a series or branch of predicted transitions using the Transitions Window and append it to the Line List. Then, you open the Nearest Line Plot (example in Fig. \ref{fig:nlp_ex}). Typically you use the Filter option there, which filters only the selected series or branch in a chosen frequency range. 
+
 
 Since 2019, the Nearest Lines Plot also has an intensity filter, which works the following way: you can use the variables $I_{obs}$ and $I_{calc}$ and form some kind of inequality with them, such as $I_{obs} / I_{calc} > \eta$.
 
 Finally, you select the area with the correct assignment candidates with the mouse and click Assign Points Inside. You can assign tens to hundreds of lines at once like this. 
+
 \subsection{Global Fitter}
 
 The one question which must be addressed when talking about fits with assignments (see Introduction) is when do we need them, and when it is sufficient to use a direct fit of the experimental spectrum $E$ to the simulated spectrum $S(M)$ with a model $M$, e.g. a quantum model of the molecule.
@@ -314,6 +328,7 @@ It turns out that for the whole parameter space of a typical spectroscopic model
 That means, it is not possible to find the global maximum of $f$ from a starting point which is far away from it in parameter space. However, it is easy to locally optimize the model $M$ as soon as the starting point is at the slope. 
 
 For a typical spectroscopic model it means that as soon as the rotational constants $A$, $B$, $C$ and the quatric distortions $D_J$, $D_{JK}$, $D_K$, $d_J$ and $d_K$ are good enough, higher-order distortions can be found by optimizing $f$.
+
 
 \section{Examples}
 \subsection{OCS}
@@ -370,7 +385,7 @@ As in previous tests, increasing both $\Delta c$ and $|C|$ ultimately yields $n_
 But there is also at least one more strategy that can be used: adding another fit transition \emph{without} adding an additional fit parameter. This reduces obs minus calc after the auto fit compared to an auto fit with fewer fit transitions and enlarges the $n_{OK}$ \lq\lq{}gap\rq\rq{}. The main disadvantage -- computation time goes up drastically. %The final output for $3$ fit transitions and $37$ check transitions with a $\Delta c = 35$ MHz is shown in Fig. \ref{fig:ocs_final}.
 
 
-With all transitions up to 300 GHz assigned, we consider the early stage of assignment complete for this case.
+%With all transitions up to 300 GHz assigned, we consider the early stage of assignment complete for this case.
 
 \subsubsection{Intermediate and late stages of assignment}
 
@@ -395,7 +410,14 @@ In preliminary tests with no noise, we started with $J' = 8$, from which arbitra
 
 If the amount of noise is large, e.g. more than $50\%$ of  experimental peaks don't belong to the species of interest, it is good to additionally fit $D_J$ and one additional $K$-ladder. So in the actual tests, with added noise, we started with $J' = 8, 9$, from which $4$ lines were marked as fit transitions and the others were marked as check transitions.
 
-In both cases we selected $\Delta s = 300$ MHz and $\Delta c = 2$ MHz, which yield a well distinguishable good assignment in the first output row. This assignment is almost correct: it gives parameter values, which are sufficiently good for the next stage of assignment, and contains a few assignment errors, which will be also revealed and fixed in the next stage of assignment. 
+In both cases we selected $\Delta s = 300$ MHz and $\Delta c = 2$ MHz, which yield a well distinguishable good assignment in the first output row. This assignment (example in Fig. \ref{fig:vyn_autofit}): gives parameter values, which are sufficiently good for the next stage of assignment, and contains a assignment errors, which will be  revealed and fixed in the intermediate stage of assignment. 
+
+\begin{figure}[h]
+\center{\includegraphics[width=0.85\linewidth]{./pic/vyn_first}}
+\caption{\small Example of an AUTOFIT early stage assignment of $\rm C_2H_3CN$. It definitely includes assignment errors, but the overall structure of the $K$-ladder and thus the fittet parameters are reasonable.}
+\label{fig:vyn_autofit}
+\end{figure}
+
 
 %We were going to try the brute force approach again and put $\mu_a$-type transitions with $6 \leq J' \leq 14$, with $10\%$ strength cutoff and 140 GHz frequency cutoff (total of 165 transitions), preliminary marked as check transitions, into the Line List.  
 
@@ -499,5 +521,11 @@ The difference is that here the work is a more careful. What one immediately see
 
 %[Also observation 4, hypothesis 5 and 6. and 7]
 
+
+\section{Conclusion}
+
+\subsection{Strategic assignment and fitting}
+
+This is not a distinct new method, but rather a summary and combination of the above methods. 
 
 \end{document}
