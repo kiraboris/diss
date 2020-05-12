@@ -380,37 +380,75 @@ Since OCS, being a linear molecule, contains only a single series of quantum tra
 
 Vinyl cyanide ($\rm C_2H_3CN$), also known as acrylonitrile or propenenitrile, is an important molecule in space: it has been detected in the Sagittarius B2 star forming region, in dark clouds, circumstellar envelopes, in Titan atmosphere. The molecule is a highly prolate asymmetric top with $\kappa = -0.9798$ for the main isotopic species in its ground vibrational state and two nonzero electric dipole moments $\mu_a = 3.816(3)$ D and $\mu_b = 0.687(8)$ D.  
 
-For a single species and vibrational state of $\rm C_2H_3CN$, 
+
+For the same reason as in the OCS example, we took here artificial spectra of $\rm C_2H_3CN$ lines from CDMS. In the first few tests, just the main species was taken as $E$ with some added noise. An asymmetric top model was created in PGOPHER with only rigid rotational constants $A, B, C$. The initial constant values were derived from true values of a complete parameter list by forcefully setting all distortions and perturbations to zero and then fitting the correct assignment to only $A, B, C$. This gives, in some sense, effective values of $A, B, C$, which mimic ab initio calculation results. %selecting random shifts within $1\%$ of the true value, resembling an ab initio calculations result, where also $1\%$ error is often a fair guess. 
+
+\subsubsection{Early stage of assignment}
+
+At the early stage of assignment is it reasonable to start again below $100$ GHz. 
+For a single species of $\rm C_2H_3CN$, 
 %For molecules near $\kappa = -1$ the largest rigid rotor constant (typically A) is much larger than the other ones and the spectrum looks almost like a spectrum of a symmetric top.  % TODO: move to introduction
 distinct $K$-ladders of $\mu_a$-type lines at different $J$ are the strong features. %The $\mu_a$-type spectra can be actually assigned straightforward, though some different assignments in the middle of a $K-$ladder may need to be tested at early stage.
-It is important to float $B$, $C$ and $DJK$ in the initial auto fit, as those constants are the main factors for the mentioned $K$-ladders. 
+It is important to fit at least $B$, $C$ and $D_{JK}$ in the initial auto fit, as these constants are the main factors for one $K$-ladder. 
 
+In the test with low noise  we started with $J' = 8$, from which arbitrary $3$ lines were marked as fit transitions and the others were marked as check transitions. 
 
-For the same reason as in the OCS example, we took here artificial mixtures of $\rm C_2H_3CN$ lines from CDMS. In the first test, just the main species was taken as $E$ and one asymmetric top model was created in PGOPHER with only rigid rotational constants $A, B, C$. The initial constant values were derived from true values of a complete parameter list by forcefully setting all distortions and perturbations to zero and then fitting the correct assignment to only $A, B, C$. This gives, in some sense, effective values of $A, B, C$, which mimic ab initio calculation results. %selecting random shifts within $1\%$ of the true value, resembling an ab initio calculations result, where also $1\%$ error is often a fair guess. 
+If the amount of noise is large, e.g. more than $50\%$ of  experimental peaks don't belong to the species of interest, it is good to additionally fit $D_J$ and one additional $K$-ladder. Here we started with $J' = 8, 9$, from which $4$ lines were marked as fit transitions and the others were marked as check transitions.
 
-At the early stage of assignment is it reasonable to start again below and around $100$ GHz. We were going to try the brute force approach again and put $\mu_a$-type transitions with $6 \leq J' \leq 14$, with $10\%$ strength cutoff and 140 GHz frequency cutoff (total of 165 transitions), preliminary marked as check transitions, into the Line List.  
+In both cases we selected $\Delta s = 300$ MHz and $\Delta c = 2$ MHz, which yield a  well distinguishable good assignment in the first output row. This assignment is almost correct: it gives parameter values, which are sufficiently good for the next stage of assignment, and contains a few assignment errors, which will be also revealed and fixed in the next stage of assignment. 
+
+%We were going to try the brute force approach again and put $\mu_a$-type transitions with $6 \leq J' \leq 14$, with $10\%$ strength cutoff and 140 GHz frequency cutoff (total of 165 transitions), preliminary marked as check transitions, into the Line List.  
 
 %The fit transitions set must have enough  \lq\lq{}diversity\rq\rq{}\todo{what the heck is diversity}  in quantum numbers to minimize the uncertainty after a least squares fit. In respect to that good fit transitions with a fixed total amount may be suggested automatically -- the original AUTOFIT software has this feature. A right thumb approach to this would be to select fit transitions from different K-ladders (i.e. with different $J'$).
 
-Different sets of fit transitions in this test, unlike the simple case of $\rm OCS$, yield considerably different output, although some predicted lines are assigned to the same experimental peaks among several auto fits with different fit transitions. It seems like for this case and more complex cases, visual instruments and human judgment are needed to distinguish \lq\lq{}almost correct\rq\rq{} assignments.
+%Different sets of fit transitions in this test, unlike the simple case of $\rm OCS$, yield considerably different output, although some predicted lines are assigned to the same experimental peaks among several auto fits with different fit transitions. It seems like for this case and more complex cases, visual instruments and human judgment are needed to distinguish \lq\lq{}almost correct\rq\rq{} assignments.
 
-In our case with $\rm 9_{2,7}-8_{2,6}, 9_{1,8}-8_{1,7}, 10_{1,10}-9_{1,9}$ as fit transitions, $2000$ MHz search window and $20$ MHz check window we get a following good and well distinguishable assignment in the first output row. 
+%In our case with $\rm 9_{2,7}-8_{2,6}, 9_{1,8}-8_{1,7}, 10_{1,10}-9_{1,9}$ as fit transitions, $2000$ MHz search window and $20$ MHz check window we get a following good and well distinguishable assignment in the first output row. 
 
-The next stage of assignment, the intermediate stage, begins then. Typically it is reasonable to use the Nearest Lines instrument for visualizing the trend of the R-branch lines first, when working in PGOPHER. The Nearest Lines instrument in our case shows a mess when selecting all Kas together, but you can see some trends when selecting individual Kas. There, when viewing a +-1 MHz by 190 GHz window, Ka=1,2,3 have a large curvature, Ka=3,4,5,6 look ok, and Ka >= 8 trends become a large Y axis shift, and that shift is rapidly increasing with increasing Ka, so that for large Kas the correct assignement points are completely out of visibility. 
+\subsubsection{Intermediate stage of assignment}
 
-What also can be noticed is that for some lower Kas the lines are in a sense isolated, so that in a reasonable search window only one experimental peak corresponds to a given transition immediately after AUTOFIT or even before (with only ab initios). These transitons can be assigned right away. But it is not done automatically by now, since the automatic routines are not sure when there is really only one possible candidate, and this decision is left to the human, the humans eye is very good at recognizing patterns. 
+The Nearest Lines Plot in PGOPHER was used for visualizing systematic trends in series of spectral lines. The Nearest Lines instrument shows a mess when selecting all $K_a$ together, but the trends are visible when selecting individual $K_a$ in the Filter. 
 
-Patterns consist of calc transitions repeatedly positioned together at different quantum numbers. There are true patterns and false patterns. Also, already assigned lines from the current species or other isotopologues and vibrational states play a big role. And also the intensity ratios play a big role, thought only locally, and only ratios, not the absolute intensities, for most experiments done, algthough there are experiments which are calibrated to absolute intensities.
+Also, applying a restriction for the intensity ratio of the calculated and experimental lines helps, if it is consistent enough. Intensity ratios play a big role when choosing between otherwise unclear nearest lines. In most experiments though\footnote{There are experiments which are calibrated to absolute intensities.}, intensities of two peaks can be compared only locally, in a certain frequency window. 
+
+Fig. \ref{fig:vin_analytics_5} and \ref{fig:vin_analytics_6} show the change of some metrics during the intermediate stage of assignment of the main species on vinyl cyanide. The X axis represents steps of assignment. The various selected metrics are plotted along the Y axis in the three vertical parts of the plots, from top to bottom: 
+\begin{enumerate}
+    \item The relative deviation of the current model parameter values to the true model parameter values. The true model is taken from CDMS; 
+    \item The amount of fitted lines in each branch and in total;
+    \item The value of $f_{RMS}$ for the lines currently in the fit (bold line) and for the lines in the last step of the intermediate stage of assignment (thin line).
+\end{enumerate}
+
+
+\begin{sidewaysfigure}
+\center{\includegraphics[width=1.2\linewidth]{./pic/5}}
+\caption{\small The flow is: at first the R-branch was extended to include more $J$s. Some additional distortions were taken into the fit. Then, the Q-branch was found. }
+\label{fig:vin_analytics_5}
+\end{sidewaysfigure}
+
+
+\begin{sidewaysfigure}
+\center{\includegraphics[width=1.2\linewidth]{./pic/6}}
+\caption{\small The flow is: at first the R-branch was extended to include more $J$s. Some additional distortions were taken into the fit. Then, the Q-branch was found. }
+\label{fig:vin_analytics_6}
+\end{sidewaysfigure}
+
+
+
+%There, when viewing a +-1 MHz by 190 GHz window, Ka=1,2,3 have a large curvature, Ka=3,4,5,6 look ok, and Ka >= 8 trends become a large Y axis shift, and that shift is rapidly increasing with increasing Ka, so that for large Kas the correct assignement points are completely out of visibility. 
+
+%What also can be noticed is that for some lower Kas the lines are in a sense isolated, so that in a reasonable search window only one experimental peak corresponds to a given transition immediately after AUTOFIT or even before (with only ab initios). These transitons can be assigned right away. But it is not done automatically by now, since the automatic routines are not sure when there is really only one possible candidate, and this decision is left to the human, the humans eye is very good at recognizing patterns. 
+
+%Patterns consist of calc transitions repeatedly positioned together at different quantum numbers. There are true patterns and false patterns. Also, already assigned lines from the current species or other isotopologues and vibrational states play a big role. 
  
-\subsection{Thiazole}
+%\subsection{Thiazole}
 
-Thiazole is a ring molecule, well known in infrared, whose vibrationally excited rotation states had not been investigated before. In this work, new analysis methods are applied to their investigation.
+%Thiazole is a ring molecule, well known in infrared, whose vibrationally excited rotation states had not been investigated before. In this work, new analysis methods are applied to their investigation.
 
-At first we do an AUTOFIT run. We want to fit only $B$ and $C$ to the a-type spectrum, but selecting only two fit transitions doesn't give a good result. \todo{Provide a proof for this using vinyl cyanide.} Then we use $3$ fit transitions. 
+%At first we do an AUTOFIT run. We want to fit only $B$ and $C$ to the a-type spectrum, but selecting only two fit transitions doesn't give a good result. \todo{Provide a proof for this using vinyl cyanide.} Then we use $3$ fit transitions. 
 
-After selecting the correct result from AUTOFIT output, the middle stage of assignement begins. For the ground vibrational state of the main isotopologue, which has the strongest lines, the middle stage of assignment was quite simple, because in the Nearest Line Plot the trend was immediately visible. That was, however, not the case with v18=1 and even less with v17=1. For these states, some manual search for good assignments and their neighbourhoods were needed.
+%After selecting the correct result from AUTOFIT output, the middle stage of assignement begins. For the ground vibrational state of the main isotopologue, which has the strongest lines, the middle stage of assignment was quite simple, because in the Nearest Line Plot the trend was immediately visible. That was, however, not the case with v18=1 and even less with v17=1. For these states, some manual search for good assignments and their neighbourhoods were needed.
 
-So it is obvious that an automated procedure should respect already assigned lines from the main species (and others.)
+%So it is obvious that an automated procedure should respect already assigned lines from the main species (and others.)
 %\begin{figure}[h]
 %\center{\includegraphics[width=0.85\linewidth]{./pic/vyn_first}}
 %\caption{\small The fist step of the early stage assignment of  $\rm C_2H_3CN$ main species (1st test). }
